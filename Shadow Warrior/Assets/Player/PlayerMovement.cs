@@ -5,6 +5,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class PlayerMovement : MonoBehaviour
 {
+
 	[SerializeField]
 	float walkMoveStopRadius = 0.2f;
 
@@ -12,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     CameraRaycaster cameraRaycaster;
     Vector3 currentClickTarget;
         
+	bool isInDirectMode = false; //TODO consider making static later
+
     private void Start()
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
@@ -21,10 +24,35 @@ public class PlayerMovement : MonoBehaviour
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
-    {
-        if (Input.GetMouseButton(0))
+	{
+		if (Input.GetKeyDown(KeyCode.G)) // G for gamepad. TODO add to menu
+		{
+			isInDirectMode = !isInDirectMode; // toggle mode
+		}
+
+		if (isInDirectMode) {
+			ProcessDirectMovement();
+		} else {
+			ProcessMouseMovement ();
+		}
+	}
+
+	private void ProcessDirectMovement()
+	{
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
+	
+		// calculate camera relative direction to move:
+		Vector3 m_CamForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+		Vector3 m_Move = v*m_CamForward + h * Camera.main.transform.right;
+
+		m_Character.Move(m_Move, false, false);
+	}
+	private void ProcessMouseMovement()
+	{
+		if (Input.GetMouseButton(0))
         {
-            print("Cursor raycast hit" + cameraRaycaster.layerHit);
+       
 			switch (cameraRaycaster.layerHit)
 			{
 			case Layer.Walkable:
