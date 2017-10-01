@@ -8,7 +8,7 @@ public class PlayerHealthBar : MonoBehaviour
 {
 
     RawImage healthBarRawImage;
-    Player player;
+    public Player player;
 
     // Use this for initialization
     void Start()
