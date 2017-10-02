@@ -8,8 +8,12 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 
 	[SerializeField] float maxHealthPoints = 100f;
-	[SerializeField] float attackRadius = 10.0f;
 	[SerializeField] float chaseRadius = 5.0f;
+	[SerializeField] float attackRadius = 10.0f;
+	[SerializeField] float damagePerShot = 9f;
+
+	[SerializeField] GameObject projectileToUse;
+	[SerializeField] GameObject projectileSocket;
 
 	float currentHealthPoints = 100f;
 	AICharacterControl aiCharacterControl = null;
@@ -29,14 +33,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 		aiCharacterControl = GetComponent<AICharacterControl> ();
 	}
 
-	// TODO CLEAN UP
-	//void LaunchProjectile(){
-	//	GameObject.projectile = 
-	//		if(Layerhit = attackRadius)
-	//		{
-	//			fire(projectile);
-	//		}
-	//}
 
 	void Update (){
 
@@ -44,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		if (distanceToPlayer <= attackRadius) 
 		{
 			print (gameObject.name + "attacking player");
-			//TODO spawn projectile
+			SpawnProjectile (); // TODO slow this down
 		} 
 		else
 		{
@@ -62,6 +58,18 @@ public class Enemy : MonoBehaviour, IDamageable {
 			aiCharacterControl.SetTarget (transform);
 		}
 	}
+
+
+	void SpawnProjectile(){
+		GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, Quaternion.identity);
+		Projectile projectileComponent = newProjectile.GetComponent<Projectile> ();
+		projectileComponent.damageCaused =  damagePerShot; // Set Damage
+
+		Vector3 unitVectorToPlayer = (player.transform.position - projectileSocket.transform.position).normalized;
+		float projectileSpeed = projectileComponent.projectileSpeed;
+		newProjectile.GetComponent<Rigidbody> ().velocity = unitVectorToPlayer * projectileSpeed;
+	}
+
 
 	public void TakeDamage(float damage)
 	{

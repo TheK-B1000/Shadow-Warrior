@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-	[SerializeField] float damageCaused = 10f;
+	public float damageCaused { get; set; }
+    public float projectileSpeed; // Note other classes can set
 
 	void OnTriggerEnter(Collider collider){
 		
