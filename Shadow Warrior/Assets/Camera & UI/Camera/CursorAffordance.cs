@@ -24,19 +24,18 @@ public class CursorAffordance : MonoBehaviour {
 		
 	void OnLayerChanged (int newLayer) {
 		print("Cusor over new layer");
-		switch (newLayer)
-		{
+		switch (newLayer) {
 		case walkableLayerNumber:
-			Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
+			Cursor.SetCursor (walkCursor, cursorHotspot, CursorMode.Auto);
 			break;
 		case enemyLayerNumber:
-			Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
+			Cursor.SetCursor (targetCursor, cursorHotspot, CursorMode.Auto);
 			break;
 		default:
-			Cursor.SetCursor(unknownCursor, cursorHotspot, CursorMode.Auto);
+			Cursor.SetCursor (unknownCursor, cursorHotspot, CursorMode.Auto);
 			break;
-			return;
 		}
+			return;
 	}
 
 	// TODO consider de-registering OnLayerChanged on leaving all game scenes
