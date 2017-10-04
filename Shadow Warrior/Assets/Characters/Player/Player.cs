@@ -8,7 +8,6 @@ public class Player : MonoBehaviour, IDamageable {
 
 
 	[SerializeField] float maxHealthPoints = 100f;
-	[SerializeField] int[] layerPriorities;
 	[SerializeField] int enemyLayer = 9;
 	[SerializeField] float damagePerHit = 10f;
 	[SerializeField] float minTimeBetweenHits = .5f;

@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour{
 	[SerializeField] const int enemyLayerNumber = 9;
 
         
-	//bool isInDirectMode = false; 
+	bool isInDirectMode = false; 
 
     void Start()
     {
