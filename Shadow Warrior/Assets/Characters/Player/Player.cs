@@ -12,7 +12,10 @@ public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] float damagePerHit = 10f;
 	[SerializeField] float minTimeBetweenHits = .5f;
 	[SerializeField] float maxAttackRange = 2f;
+
 	[SerializeField] Weapon weaponInUse;
+	[SerializeField] GameObject weaponSocketRight;
+	[SerializeField] GameObject weaponSocketLeft;
 
 
 	GameObject currentTarget;
@@ -32,8 +35,12 @@ public class Player : MonoBehaviour, IDamageable {
 	private void PutWeaponInHand()
 	{
 		var weaponPrefab = weaponInUse.GetWeaponPrefab();
-		var weapon = Instantiate(weaponPrefab);
+		var weapon = Instantiate(weaponPrefab, weaponSocketRight.transform, weaponSocketLeft.transform);
+
 		// TODO move to correct place and child to hand
+		weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
+		weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
+
 	}
 
 	private void RegisterForMouseClick()
