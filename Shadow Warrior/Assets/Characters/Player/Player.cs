@@ -12,17 +12,32 @@ public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] float damagePerHit = 10f;
 	[SerializeField] float minTimeBetweenHits = .5f;
 	[SerializeField] float maxAttackRange = 2f;
+	[SerializeField] Weapon weaponInUse;
 
 
 	GameObject currentTarget;
-	float currentHealthPoints = 100f;
+	float currentHealthPoints;
 	CameraRaycaster cameraRaycaster;
-	float lastHitTime;
-	float damageCaused;
+	float lastHitTime = 0f;
 
 	public float healthAsPercentage{ get { return currentHealthPoints / (maxHealthPoints); } }
 
 	void Start () {
+		RegisterForMouseClick ();
+		currentHealthPoints = maxHealthPoints;
+		PutWeaponInHand ();
+
+	}
+
+	private void PutWeaponInHand()
+	{
+		var weaponPrefab = weaponInUse.GetWeaponPrefab();
+		var weapon = Instantiate(weaponPrefab);
+		// TODO move to correct place and child to hand
+	}
+
+	private void RegisterForMouseClick()
+	{
 		cameraRaycaster = FindObjectOfType<CameraRaycaster> ();
 		cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
 	}
@@ -53,7 +68,6 @@ public class Player : MonoBehaviour, IDamageable {
 
 	public void DealDamage (float damage) 
 	{
-		damageCaused = damage;
 		print ("Damaged enemy");
 	}
 
@@ -68,7 +82,7 @@ public class Player : MonoBehaviour, IDamageable {
 		Component damageableComponent = collider.gameObject.GetComponent (typeof(IDamageable));
 		if (damageableComponent) 
 		{
-			(damageableComponent as IDamageable).TakeDamage (damageCaused);
+			(damageableComponent as IDamageable).TakeDamage (damagePerHit);
 		}
 	}
 }
