@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour {
 
 
     public float projectileSpeed; // Note other classes can set
-
+	Projectile projectile;
 	float damageCaused;
 
 	public void SetDamage(float damage)
@@ -14,13 +14,12 @@ public class Projectile : MonoBehaviour {
 		damageCaused = damage;
 	}
 
-	void OnTriggerEnter(Collider collider){
+	void OnCollisionEnter(Collision collision){
 		
-		Component damageableComponent = collider.gameObject.GetComponent (typeof(IDamageable));
-		if (damageableComponent) 
-		{
+		Component damageableComponent = collision.gameObject.GetComponent (typeof(IDamageable));
+		if (damageableComponent) {
 			(damageableComponent as IDamageable).TakeDamage (damageCaused);
 		}
+		Destroy (projectile, 5);
 	}
-
 }
