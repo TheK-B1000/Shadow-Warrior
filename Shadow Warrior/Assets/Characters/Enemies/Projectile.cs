@@ -5,21 +5,45 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
 
-    public float projectileSpeed; // Note other classes can set
-	Projectile projectile;
+	[SerializeField] float projectileSpeed; 
+	[SerializeField] GameObject shooter; // So can ispected when paused
+
+	const float Destroy_Delay = 0.01f;
 	float damageCaused;
 
+	public void SetShooter(GameObject shooter)
+	{
+		this.shooter = shooter;
+	}
+		
 	public void SetDamage(float damage)
 	{
 		damageCaused = damage;
 	}
 
-	void OnCollisionEnter(Collision collision){
-		
-		Component damageableComponent = collision.gameObject.GetComponent (typeof(IDamageable));
-		if (damageableComponent) {
-			(damageableComponent as IDamageable).TakeDamage (damageCaused);
-		}
-		Destroy (projectile, 5);
+	public float GetDefaultLaunchSpeed()
+	{
+		return projectileSpeed;
 	}
+
+
+	void OnCollisionEnter(Collision collision)
+	{
+		var layerCollidedWith = collision.gameObject.layer;
+		if (collision.gameObject.layer != shooter.layer) 
+		{
+			DamageDamegables (collision);
+		}
+	}
+
+	private void DamageDamegables (Collision collision)
+	{
+		Component damageableComponent = collision.gameObject.GetComponent (typeof(IDamageable));
+		if (damageableComponent) 
+		{
+				(damageableComponent as IDamageable).TakeDamage (damageCaused);
+		}
+		Destroy (gameObject, Destroy_Delay);
+	}
+		
 }
