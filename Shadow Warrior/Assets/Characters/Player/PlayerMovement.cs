@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour{
 
     ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster cameraRaycaster;
-    Vector3 currentDestination, clickPoint;
-	AICharacterControl aiCharacterControl;
+    Vector3 clickPoint;
+	AICharacterControl aiCharacterControl = null;
 	GameObject walkTarget = null;
 
 
@@ -28,7 +28,6 @@ public class PlayerMovement : MonoBehaviour{
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-		currentDestination = transform.position;
 		aiCharacterControl = GetComponent<AICharacterControl> ();
 		walkTarget = new GameObject ("walkTarget");
 
@@ -38,7 +37,8 @@ public class PlayerMovement : MonoBehaviour{
    
 	void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
 	{
-		switch (layerHit) {
+		switch (layerHit)
+		{
 		case enemyLayerNumber:
 			// naviaget to the enemy
 			GameObject enemy = raycastHit.collider.gameObject;

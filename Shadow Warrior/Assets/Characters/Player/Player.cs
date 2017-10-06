@@ -13,7 +13,6 @@ public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] float damagePerHit = 10f;
 	[SerializeField] float minTimeBetweenHits = .5f;
 	[SerializeField] float maxAttackRange = 2f;
-
 	[SerializeField] Weapon weaponInUse;
 
 
@@ -35,9 +34,7 @@ public class Player : MonoBehaviour, IDamageable {
 	{
 		var weaponPrefab = weaponInUse.GetWeaponPrefab();
 		GameObject dominantHand = RequestDominantHand ();
-		var weapon = Instantiate(weaponPrefab, dominantHand.transform);
-
-		// TODO move to correct place and child to hand
+		var weapon = Instantiate (weaponPrefab, dominantHand.transform);
 		weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
 		weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
 
@@ -47,9 +44,9 @@ public class Player : MonoBehaviour, IDamageable {
 	{
 		var dominantHands = GetComponentsInChildren<DominantHand>();
 		int numberOfDominantHands = dominantHands.Length;
-		Assert.AreNotEqual (numberOfDominantHands, 0, "No DominantHand found on Player ");
-		Assert.IsFalse (numberOfDominantHands  > 1, "Multiple DominantHand Scripts found on Player, Please remove one ")
-	
+		Assert.IsFalse (numberOfDominantHands <=0, "No DominantHand found on Player ");
+		Assert.IsFalse (numberOfDominantHands > 1, "Multiple DominantHand Scripts found on Player, Please remove one ");
+		return dominantHands[0].gameObject;
 	}
 
 	private void RegisterForMouseClick()
@@ -58,11 +55,11 @@ public class Player : MonoBehaviour, IDamageable {
 		cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
 	}
 
+	// TODO refactor to reduce number of lines
 	void OnMouseClicked(RaycastHit raycastHit, int layerHit) 
 	{
 		if (layerHit == enemyLayer)
 		{
-			DealDamage (enemyLayer);
 			var enemy = raycastHit.collider.gameObject;
 
 			// Check enemy is in range
@@ -70,8 +67,7 @@ public class Player : MonoBehaviour, IDamageable {
 			{
 				return;
 			}
-
-			currentTarget = enemy;
+				
 
 			var enemyComponent = enemy.GetComponent<Enemy> ();
 			if (Time.time - lastHitTime > minTimeBetweenHits)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyHealthBar : MonoBehaviour
 {
-    RawImage healthBarRawImage = null;
+    RawImage healthBarRawImage;
     Enemy enemy = null;
 
     // Use this for initialization
