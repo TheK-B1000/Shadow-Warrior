@@ -106,10 +106,10 @@ namespace UnityStandardAssets.ImageEffects
 
             doHdr = false;
             if (hdr == HDRBloomMode.Auto)
-                doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().hdr;
-            else {
-                doHdr = hdr == HDRBloomMode.On;
-            }
+                //doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().hdr;
+           // else {
+               // doHdr = hdr == HDRBloomMode.On;
+           // }
 
             doHdr = doHdr && supportHDRTextures;
 
