@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		if (distanceToPlayer <= chaseRadius) 
 		{
-			print (gameObject.name + "move to player");
+			//print (gameObject.name + "move to player");
 			aiCharacterControl.SetTarget(player.transform);
 		} 
 		else 
