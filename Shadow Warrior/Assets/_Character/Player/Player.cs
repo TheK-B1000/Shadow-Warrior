@@ -92,9 +92,9 @@ public class Player : MonoBehaviour, IDamageable {
 			private void AttackTarget (GameObject target)
 			{
 				var enemyComponent = target.GetComponent<Enemy> ();
-			if (Time.time - lastHitTime > weaponInUse.GetminTimeBetweenHits())
+			if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
 				{
-					animator.SetTrigger ("Attack"); // TODO make const
+					animator.SetTrigger("Attack"); // TODO make const
 					enemyComponent.TakeDamage (damagePerHit);
 					lastHitTime = Time.time;
 				}
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour, IDamageable {
 			private bool IsTargetInRange(GameObject target)
 			{
 				float distanceToTarget = (target.transform.position - transform.position).magnitude;
-				return distanceToTarget <= weaponInUse.GetmaxAttackRange;
+				return distanceToTarget <= weaponInUse.GetMaxAttackRange();
 			}
 
 		public void DealDamage (float damage) 

@@ -20,7 +20,7 @@ public class Weapon : ScriptableObject {
 			return minTimeBetweenHits;
 		}
 
-		public float GetMaxAttack()
+		public float GetMaxAttackRange()
 		{
 			return maxAttackRange;
 		}
