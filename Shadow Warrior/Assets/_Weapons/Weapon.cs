@@ -11,6 +11,19 @@ public class Weapon : ScriptableObject {
 
 		[SerializeField] GameObject weaponPrefab;
 		[SerializeField] AnimationClip attackAnimation;
+		[SerializeField] float minTimeBetweenHits = .5f;
+		[SerializeField] float maxAttackRange = 2f;
+
+		public float GetMinTimeBetweenHits()
+		{
+			//TODO consider whether we take animation time into account
+			return minTimeBetweenHits;
+		}
+
+		public float GetMaxAttack()
+		{
+			return maxAttackRange;
+		}
 
 		public GameObject GetWeaponPrefab()
 		{

@@ -54,8 +54,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 			isAttacking = false;
 			CancelInvoke ();
 		}
-	
-			
 
 		if (distanceToPlayer <= chaseRadius) 
 		{
@@ -80,7 +78,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 		newProjectile.GetComponent<Rigidbody> ().velocity = unitVectorToPlayer * projectileSpeed;
 	}
 
-
+	
 	public void TakeDamage(float damage)
 	{
 		currentHealthPoints = Mathf.Clamp (currentHealthPoints - damage, 0f, maxHealthPoints);
