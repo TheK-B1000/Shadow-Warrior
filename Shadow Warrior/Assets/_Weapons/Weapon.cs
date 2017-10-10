@@ -12,8 +12,13 @@ public class Weapon : ScriptableObject {
 		[SerializeField] GameObject weaponPrefab;
 		[SerializeField] AnimationClip attackAnimation;
 
-		public GameObject GetWeaponPrefab(){
+		public GameObject GetWeaponPrefab()
+		{
 			return weaponPrefab;
+		}
+		public AnimationClip GetAttackAnimClip()
+		{
+			return attackAnimation;
 		}
 	}
 }

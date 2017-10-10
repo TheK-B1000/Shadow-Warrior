@@ -19,7 +19,7 @@ public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] float minTimeBetweenHits = .5f;
 	[SerializeField] float maxAttackRange = 2f;
 	[SerializeField] Weapon weaponInUse;
-
+	[SerializeField] AnimatorOverrideController  animatorOverrideController; 
 
 	GameObject currentTarget;
 	float currentHealthPoints;
@@ -28,12 +28,26 @@ public class Player : MonoBehaviour, IDamageable {
 
 	public float healthAsPercentage{ get { return currentHealthPoints / (maxHealthPoints); } }
 
-	void Start () {
+	void Start ()
+	{
 		RegisterForMouseClick ();
-		currentHealthPoints = maxHealthPoints;
+		SetCurrentMaxHealth ();
 		PutWeaponInHand ();
+		OverrideAnimatorController ();
 
 	}
+
+	private void SetCurrentMaxHealth ()
+		{
+			currentHealthPoints = maxHealthPoints;
+		}
+
+	private void OverrideAnimatorController ()
+		{
+			var animator = GetComponent<Animator>();
+			animator.runtimeAnimatorController = animatorOverrideController;
+			animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // remove parameter
+		}
 
 	private void PutWeaponInHand()
 	{
