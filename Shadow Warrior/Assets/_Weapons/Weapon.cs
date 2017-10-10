@@ -18,7 +18,14 @@ public class Weapon : ScriptableObject {
 		}
 		public AnimationClip GetAttackAnimClip()
 		{
+			RemoveAnimationEvents (); 
 			return attackAnimation;
+		}
+
+		//So that asset packs cannot cause crashes
+		void RemoveAnimationEvents ()
+		{
+			attackAnimation.events = new AnimationEvent[0];
 		}
 	}
 }
