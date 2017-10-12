@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// This is the same Camera PivotBasedCameraRig of the Stardard Assets but with the CrossPlatform Input Maganger Removed
-/// </summary>
-namespace MalbersAnimations
+namespace UnityStandardAssets.Water
 {
     [ExecuteInEditMode] // Make water live-update even when not in play mode
     public class Water : MonoBehaviour
@@ -104,13 +101,14 @@ namespace MalbersAnimations
 
                 reflectionCamera.cullingMask = ~(1 << 4) & reflectLayers.value; // never render water layer
                 reflectionCamera.targetTexture = m_ReflectionTexture;
-                GL.invertCulling = true;
+                bool oldCulling = GL.invertCulling;
+				GL.invertCulling = !oldCulling;
                 reflectionCamera.transform.position = newpos;
                 Vector3 euler = cam.transform.eulerAngles;
                 reflectionCamera.transform.eulerAngles = new Vector3(-euler.x, euler.y, euler.z);
                 reflectionCamera.Render();
                 reflectionCamera.transform.position = oldpos;
-                GL.invertCulling = false;
+                GL.invertCulling = oldCulling;
                 GetComponent<Renderer>().sharedMaterial.SetTexture("_ReflectionTex", m_ReflectionTexture);
             }
 
@@ -338,7 +336,7 @@ namespace MalbersAnimations
 
         WaterMode FindHardwareWaterSupport()
         {
-            if (!GetComponent<Renderer>())
+            if (!SystemInfo.supportsRenderTextures || !GetComponent<Renderer>())
             {
                 return WaterMode.Simple;
             }

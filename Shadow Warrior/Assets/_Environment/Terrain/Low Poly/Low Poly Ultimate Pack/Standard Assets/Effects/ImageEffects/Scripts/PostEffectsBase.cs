@@ -94,7 +94,7 @@ namespace UnityStandardAssets.ImageEffects
             supportHDRTextures = SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             supportDX11 = SystemInfo.graphicsShaderLevel >= 50 && SystemInfo.supportsComputeShaders;
 
-/*            if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
+            if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
 			{
                 NotSupported ();
                 return false;
@@ -104,7 +104,7 @@ namespace UnityStandardAssets.ImageEffects
 			{
                 NotSupported ();
                 return false;
-            }*/
+            }
 
             if (needDepth)
                 GetComponent<Camera>().depthTextureMode |= DepthTextureMode.Depth;

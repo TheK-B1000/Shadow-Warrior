@@ -89,9 +89,9 @@ namespace UnityStandardAssets.ImageEffects
             sunShaftsMaterial.SetVector ("_SunPosition", new Vector4 (v.x, v.y, v.z, maxRadius));
             sunShaftsMaterial.SetVector ("_SunThreshold", sunThreshold);
 
-           /* if (!useDepthTexture) {
+            if (!useDepthTexture) {
                 var format= GetComponent<Camera>().hdr ? RenderTextureFormat.DefaultHDR: RenderTextureFormat.Default;
-		        RenderTexture tmpBuffer = RenderTexture.GetTemporary (source.width, source.height, 0, format);
+                RenderTexture tmpBuffer = RenderTexture.GetTemporary (source.width, source.height, 0, format);
                 RenderTexture.active = tmpBuffer;
                 GL.ClearWithSkybox (false, GetComponent<Camera>());
 
@@ -101,7 +101,7 @@ namespace UnityStandardAssets.ImageEffects
             }
             else {
                 Graphics.Blit (source, lrDepthBuffer, sunShaftsMaterial, 2);
-            }*/
+            }
 
             // paint a small black small border to get rid of clamping problems
             DrawBorder (lrDepthBuffer, simpleClearMaterial);
