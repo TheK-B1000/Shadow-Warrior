@@ -22,10 +22,7 @@ public class PlayerMovement : MonoBehaviour{
 		// TODO solve fight between seralize and const
 		[SerializeField] const int walkableLayerNumber = 8;
 		[SerializeField] const int enemyLayerNumber = 9;
-
-	        
-		bool isInDirectMode = false; 
-
+	
 	    void Start()
 	    {
 	        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
