@@ -18,11 +18,6 @@ public class PlayerMovement : MonoBehaviour{
 		AICharacterControl aiCharacterControl = null;
 		GameObject walkTarget = null;
 
-
-		// TODO solve fight between seralize and const
-		[SerializeField] const int walkableLayerNumber = 8;
-		[SerializeField] const int enemyLayerNumber = 9;
-	
 	    void Start()
 	    {
 	        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
@@ -31,26 +26,24 @@ public class PlayerMovement : MonoBehaviour{
 			walkTarget = new GameObject ("walkTarget");
 
 			cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
+			cameraRaycaster.onMouseOverPotentiallyWalkable += onMouseOverPotentiallyWalkable;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 	    }
-
-	   
-		void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
+			
+		void OnMouseOverPotentiallyWalkable(Vector3 destination)
 		{
-			switch (layerHit)
+			if (Input.GetMouseButton (0)) {
+				walkTarget.transform.position = destination;
+				aiCharacterControl.SetTarget (walkTarget.transform);
+			}
+
+		}
+
+		void OnMouseOverEnemy (Enemy enemy)
+		{
+			if (Input.GetMouseButton (0)) || Input.GetMouseButtonDown(1);
 			{
-			case enemyLayerNumber:
-				// naviaget to the enemy
-				GameObject enemy = raycastHit.collider.gameObject;
-				aiCharacterControl.SetTarget(enemy.transform);
-				break;
-			case walkableLayerNumber:
-				// navigate to point on the ground
-				walkTarget.transform.position = raycastHit.point;
-				aiCharacterControl.SetTarget(walkTarget.transform);
-				break;
-			default:
-				Debug.LogWarning ("Don't know how to handle mouse click for player movement");
-				return;
+				aiCharacterControl.SetTarget (walkTarget.transform);
 			}
 		}
 

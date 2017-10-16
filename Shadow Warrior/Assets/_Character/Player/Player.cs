@@ -12,7 +12,6 @@ namespace RPG.Character
 {
 public class Player : MonoBehaviour, IDamageable {
 
-		[SerializeField] int enemyLayer = 9;
 		[SerializeField] float maxHealthPoints = 100f;
 		[SerializeField] float damagePerHit = 10f;
 		[SerializeField] Weapon weaponInUse = null;
@@ -66,7 +65,7 @@ public class Player : MonoBehaviour, IDamageable {
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand>();
 			int numberOfDominantHands = dominantHands.Length;
-			Assert.IsFalse (numberOfDominantHands <=0, "No DominantHand found on Player ");
+			Assert.IsFalse (numberOfDominantHands <= 0, "No DominantHand found on Player ");
 			Assert.IsFalse (numberOfDominantHands > 1, "Multiple DominantHand Scripts found on Player, Please remove one ");
 			return dominantHands[0].gameObject;
 		}
@@ -74,7 +73,15 @@ public class Player : MonoBehaviour, IDamageable {
 		private void RegisterForMouseClick()
 		{
 			cameraRaycaster = FindObjectOfType<CameraRaycaster> ();
-			cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+		}
+
+		void OnMouseOverEnemy(Enemy enemy)
+		{
+			if (Input.GetMouseButton (0) && IsTargetInRange(enemy.gameObject))
+			{
+				AttackTarget (enemy);
+			}
 		}
 				
 		void OnMouseClicked(RaycastHit raycastHit, int layerHit) 
@@ -89,13 +96,12 @@ public class Player : MonoBehaviour, IDamageable {
 			}
 		}
 
-			private void AttackTarget (GameObject target)
+		private void AttackTarget (Enemy enemy)
 			{
-				var enemyComponent = target.GetComponent<Enemy> ();
 			if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
 				{
 					animator.SetTrigger("Attack"); // TODO make const
-					enemyComponent.TakeDamage (damagePerHit);
+					enemy.TakeDamage (damagePerHit);
 					lastHitTime = Time.time;
 				}
 			}

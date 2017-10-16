@@ -13,35 +13,41 @@ public class Energy : MonoBehaviour
 			[SerializeField] float pointsPerHit = 10f;
 
 			float currentEnergyPoints;
-		CameraRaycaster cameraRaycaster;
+			CameraRaycaster cameraRaycaster;
 
 		// Use this for initialization
 		void Start () 
 		{
 			currentEnergyPoints = maxEnergyPoints;	
 			cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-			cameraRaycaster.notifyRightClickObservers += ProcessRightClick;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 		}
 
+		void OnMouseOverEnemy (Enemy enemy)
+		{
+			if (Input.GetMouseButtonDown (1)) 
+			{
+				UpdateEnergyPoints ();
 
-	
-		// Update is called once per frame
-		void Update () {
-		
+				UpdateEnergyBar ();
+			}
 		}
 
-		void ProcessRightClick (RaycastHit raycastHit, int layerHit)
+		void UpdateEnergyPoints ()
 		{
 			float newEnergyPoints = currentEnergyPoints - pointsPerHit;
-			currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
-
-			UpdateEnergyBar ();
+			currentEnergyPoints = Mathf.Clamp (newEnergyPoints, 0, maxEnergyPoints);
 		}
 
 		void UpdateEnergyBar ()
 		{
-			float xValue = -(currentEnergyPoints) - 0.5f;
+			float xValue = -(EnergyAsPercent() / 2f) - 0.5f;
 			energyBar.uvRect = new Rect (xValue, 0f, 0.5f, 1f);
+		}
+
+		float EnergyAsPercent()
+		{
+			return currentEnergyPoints / maxEnergyPoints;
 		}
 	}
 }
