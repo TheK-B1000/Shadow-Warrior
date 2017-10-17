@@ -16,12 +16,12 @@ namespace RPG.Character
 			this.baseDamage = baseDamage;
 		}
 	}
-	public abstract class SpecialAbility : ScriptableObject {
+	public abstract class AbilityConfig : ScriptableObject {
 
 		[Header("SpecialAbility General")]
 		[SerializeField] float energyCost = 10f
-		[SerializeField] 
-
+		[SerializeField] GameObject particlePrefab = null;
+		
 		protected ISpecialAbility behaviour
 
 		abstract public void ISpecialAbility AddComponent (GameObject gameObjectToattachTo);
@@ -40,6 +40,11 @@ namespace RPG.Character
 	public GameObject GetParticlePrefab()
 	{
 		return particlePrefab;
+	}
+
+	public AudioClip GetAudioClip()
+	{
+		return audioClip;
 	}
 }
 

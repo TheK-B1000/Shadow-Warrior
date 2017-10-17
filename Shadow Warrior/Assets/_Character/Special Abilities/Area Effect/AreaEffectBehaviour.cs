@@ -8,6 +8,8 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 
 	AreaEffectConfig config;
 	ParticleSystem myParticleSystem;
+	AudioSource audioSource = null;
+
 
 	public void SetConfig(AreaEffectConfig configToSet)
 	{
@@ -17,13 +19,15 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 	// Use this for initialization
 	void Start ()
 	{
-		print ("Area Effect behaviour attached to " + gameObject.name);
+		AudioSource = GetComponent<AudioSource>();
 	}
 
 	public void Use(AbilityUseParams useParams)
 	{
 		DealRadialDamage (useParams);
 		PlayParticleEffect ();
+		AudioSource.PlayClipAtPoint = config.GetAudioClip ();
+		AudioSource.PlayClipAtPoint ();
 	}
 
 	private void PlayParticleEffect ()
@@ -50,7 +54,8 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 		foreach (RaycastHit hit in hits)
 		{
 			var damegable = hit.collider.gameObject.GetComponent<IDamageable> (); 
-			if (damegable != null) 
+			bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
+			if (damegable != null && !hitPlayer) 
 			{
 				float damageToDeal = useParams.baseDamage + config.GetDamageToEachTarget ();
 				damegable.TakeDamage ();

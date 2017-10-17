@@ -6,12 +6,14 @@ namespace RPG.Character;
 {
 public class SelfHealBehaviour : MonoBehaviour, ISpecialAbility
 	{
-		SelfHealConfig config;
-		Player player;
+		SelfHealConfig config = null;
+		Player player = null;
+		AudioSource audioSource = null;
 
 		void Start()
 		{
-		player = GetComponent<player> ();
+			player = GetComponent<player> ();
+		audioSource = GetComponent<AudioSource> ();
 		}
 
 		public void SetConfig(SealHealConfig configToSet)
@@ -21,8 +23,9 @@ public class SelfHealBehaviour : MonoBehaviour, ISpecialAbility
 
 		public void Use(AbilityUseParams useParams)
 		{
-			print ("Self Heal used by: " + gameObject.namespace);
-			player.AdjustHealth(-config.GetExtraHealth()); // note -ve
+			player.Heal(config.GetExtraHealth());
+			audioSource.clip = config.GetAudioClip ();
+			audioSource.Play ();
 		}
 	}
 }

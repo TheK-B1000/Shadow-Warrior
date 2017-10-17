@@ -61,17 +61,25 @@ public class Player : MonoBehaviour, IDamageable {
 
 		private void ScanForAbilityKeyDown()
 		{
-			throw new NotImplementedException ();
+			for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++) 
+			{
+				if (Input.GetKeyDown(keyIndex.ToString()))
+				}
+			}
 		}
 
 		public void AdjustHealth(float changePoints)
 		{
-			bool playerDies = (currentHealthPoints - damage <= 0);
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, max HealthPoints);
 			ReduceHealth (damage);
 			if (playerDies)  
 			{
 				StartCoroutine (KillPlayer ());
 			}
+		}
+		public void Heal(float points)
+		{
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints + damage, 0f, max HealthPoints);
 		}
 
 		IEnumerator KillPlayer()
