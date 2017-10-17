@@ -18,12 +18,18 @@ public class Player : MonoBehaviour, IDamageable {
 		[SerializeField] float baseDamage = 10f;
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController  animatorOverrideController = null; 
+		[SerializeField] AudioClip[] damageSounds;
+		[SerializeField] AudioClip[] deathSounds;
+		[Range (.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
+		[SerializeField] float criticalHitMultipler = 1.25f;
+		[SerializeField] ParticleSystem myParticleSystem = null;
 
 		// Temporarily serialized for dubbing
 		[SerializeField] SpecialAbility[] abilities;
 	
 		const string DEATH_TRIGGER = "Death";
 		const string ATTACK_TRIGGER = "Attack";
+
 
 		Enemy enemy = null;
 		Animator animator = null;
@@ -35,6 +41,8 @@ public class Player : MonoBehaviour, IDamageable {
 
 		void Start ()
 		{
+			AudioSource = GetComponent<AudioSource> ()
+
 			RegisterForMouseClick ();
 			SetCurrentMaxHealth ();
 			PutWeaponInHand ();
@@ -178,10 +186,25 @@ public class Player : MonoBehaviour, IDamageable {
 			if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
 				{
 					animator.SetTrigger(ATTACK_TRIGGER); // TODO make const
-					enemy.TakeDamage (damagePerHit);
+					enemy.TakeDamage(CalculateDamage());
 					lastHitTime = Time.time;
 				}
 			}
+
+		private float CalculateDamage()
+		{
+			bool is CriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
+			float damageBeforeCritical = baseDamage + weaponInUse.GetAdditionalDamage());
+			if (isCriticalHit)
+			{
+			criticalHitParticle.Play();
+				return damageBeforeCritical * criticalHitMultipler;
+			}
+			else
+			{
+				return damageBeforeCritical;
+			}
+		}
 
 			private bool IsTargetInRange(GameObject target)
 			{

@@ -13,6 +13,7 @@ public class Weapon : ScriptableObject {
 		[SerializeField] AnimationClip attackAnimation;
 		[SerializeField] float minTimeBetweenHits = .5f;
 		[SerializeField] float maxAttackRange = 2f;
+		[SerializeField] float additionalDamage;
 
 		public float GetMinTimeBetweenHits()
 		{
@@ -33,6 +34,11 @@ public class Weapon : ScriptableObject {
 		{
 			RemoveAnimationEvents (); 
 			return attackAnimation;
+		}
+
+		public float GetAdditionalDamage()
+		{
+
 		}
 
 		//So that asset packs cannot cause crashes
