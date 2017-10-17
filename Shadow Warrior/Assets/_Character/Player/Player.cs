@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.Assertions;
-using RPG.CameraUI; // TODO consider re-wiring
-using RPG.Core; // TODO consider re-wire
-using RPG.Weapons; // TODO consider re-wire
+
+// TODO consider re-wire
+using RPG.CameraUI; 
+using RPG.Core; 
+using RPG.Weapons;
 
 namespace RPG.Character
 {
@@ -17,6 +18,9 @@ public class Player : MonoBehaviour, IDamageable {
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController  animatorOverrideController = null; 
 
+		// Temporarily serialized for dubbing
+		[SerializeField] SpecialAbilityConfig ability1;
+	
 		Animator animator;
 		float currentHealthPoints;
 		CameraRaycaster cameraRaycaster;
@@ -30,7 +34,7 @@ public class Player : MonoBehaviour, IDamageable {
 			SetCurrentMaxHealth ();
 			PutWeaponInHand ();
 			SetupRuntimeAnimator ();
-
+			ability1.AddComponent (gameObject);
 		}
 
 		public void TakeDamage(float damage)
@@ -82,8 +86,23 @@ public class Player : MonoBehaviour, IDamageable {
 			{
 				AttackTarget (enemy);
 			}
+			else if (Input.GetMouseButtonDown(1))
+			{
+				AttemptSpecialAbility1 (enemy);
+			}
 		}
-				
+
+		private void AttemptSpecialAbility1 (Enemy enemy)
+		{
+			var energyComponent = GetComponent<Energy> ();
+
+			if (energyComponent.IsEnergyAvailable (10f)); // TODO read from S0
+			{
+				energyComponent.ConsumeEnergy (10f);
+				// TODO Use the ability
+			}
+		}
+
 		void OnMouseClicked(RaycastHit raycastHit, int layerHit) 
 		{
 			if (layerHit == enemyLayer)
