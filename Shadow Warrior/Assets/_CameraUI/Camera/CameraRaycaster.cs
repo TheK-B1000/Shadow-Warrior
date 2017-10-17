@@ -15,8 +15,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 	const int POTENTIALLY_WALKABLE_LAYER = 8;
     float maxRaycastDepth = 100f; // Hard coded value
 
-	Rect screenRectAtStartPlay = new Rect (0, 0, Screen.width, Screen.height);
-
+	Rect currentScrenRect; 
 	public delegate void OnMouseOverTerrain(Vector3 destination); 
 	public event OnMouseOverTerrain notifyMouseOverTerrainObservers;
 
@@ -36,6 +35,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 
     void Update()
 		{
+			currentScrenRect = new Rect (0, 0, Screen.width, Screen.height);
 			// Check if pointer is over an interactable UI element
 			if (EventSystem.current.IsPointerOverGameObject ()) {
 				// Impliment UI Interaction
@@ -46,7 +46,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 
 		void PerformRaycasts()
 		{
-			if (screenRectAtStartPlay.Contains (Input.mousePosition)) {
+			if (currentScrenRect.Contains (Input.mousePosition)) {
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (RaycastForEnemy (ray)) {
 					return;
