@@ -4,12 +4,17 @@ using UnityEngine;
 
 namespace RPG.Character
 {
-	[CreateAssetMenu(menuName = ("RPG/Special Ability/Power Attack"))]
 	public abstract class SpecialAbilityConfig : ScriptableObject {
 
 		[Header("SpecialAbility General")]
-		[SerializeField] float energyCost = 10f;
+		[SerializeField] float energyCost = 10f
 
-		abstract public ISpecialAbility AddComponent (GameObject gameObjectToattachTo);
+		protected ISpecialAbility behaviour
+
+		abstract public void ISpecialAbility AddComponent (GameObject gameObjectToattachTo);
+
+		public void Use()
+		{
+		}
 	}
 }
