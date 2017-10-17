@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
 using RPG.Core; // TODO consider re-wire
 using RPG.Weapons; // TODO consider re-wire
 
@@ -24,7 +23,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 	bool isAttacking = false;
 	float currentHealthPoints = 100f;
 	AICharacterControl aiCharacterControl = null;
-	GameObject player = null;
+	Player player = null;
 
 
 	public float healthAsPercentage
@@ -36,15 +35,23 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	void Start(){
+		player = FindObjectOfType<Player> ();
 		player = GameObject.FindGameObjectWithTag ("Player");
 		aiCharacterControl = GetComponent<AICharacterControl> ();
 	}
 
 
-	void Update (){
+	void Update ()
+		{
+			if (player.healthAsPercentage <= Mathf.Epsilon)
+			{
+				StopAllCoroutines();
+				Destroy (this);
+			}
 
 		float distanceToPlayer = Vector3.Distance (player.transform.position, transform.position);
-		if (distanceToPlayer <= attackRadius && !isAttacking) {
+		if (distanceToPlayer <= attackRadius && !isAttacking) 
+		{
 			isAttacking = true;
 			InvokeRepeating ("FireProjectile", 0f, secondsBetweenShots); // TODO switch to coroutines
 		}

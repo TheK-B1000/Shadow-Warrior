@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 // TODO consider re-wire
 using RPG.CameraUI; 
@@ -39,8 +40,26 @@ public class Player : MonoBehaviour, IDamageable {
 
 		public void TakeDamage(float damage)
 		{
-			currentHealthPoints = Mathf.Clamp (currentHealthPoints - damage, 0f, maxHealthPoints);
+			ReduceHealth (damage);
+			bool playerDies = (currentHealthPoints - damage <= 0);
+			if (playerDies)  
+			{
+				StartCoroutine (KillPlayer ());
+			}
+		}
 
+		IEnumerator KillPlayer()
+		{
+			Debug.Log("Death animation");
+			yield return new WaitForSecondsRealtime (2f); // todo use auddio clip length (optional)
+			SceneManager.LoadSceneMode(0);
+			// play death sound (optional)
+		}
+
+		private void ReduceHealth (float damage)
+		{
+			currentHealthPoints = Mathf.Clamp (currentHealthPoints - damage, 0f, maxHealthPoints);
+			//play sound
 		}
 
 		private void SetCurrentMaxHealth ()

@@ -15,8 +15,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 	const int POTENTIALLY_WALKABLE_LAYER = 8;
     float maxRaycastDepth = 100f; // Hard coded value
 
-		// TODO remove once working
-	int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
+	Rect screenRectAtStartPlay = new Rect (0, 0, Screen.width, Screen.height);
 
 	public delegate void OnMouseOverTerrain(Vector3 destination); 
 	public event OnMouseOverTerrain notifyMouseOverTerrainObservers;
@@ -47,13 +46,16 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 
 		void PerformRaycasts()
 		{
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			//if (RaycastForEnemy (ray)) {return;}
-			if (RaycastForPotentiallyWalkable (ray)) {return;}
-			FarTooComplex ();	// TODO remove	
+			if (screenRectAtStartPlay.Contains (Input.mousePosition)) {
+				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				if (RaycastForEnemy (ray)) {
+					return;
+				}
+				if (RaycastForPotentiallyWalkable (ray)) {return;}
+			}
 		}
 
-		private bool RaycastForPotentiallyWalkable(Ray Ray)
+		bool RaycastForPotentiallyWalkable(Ray Ray)
 			{
 			RaycastHit hitInfo;
 			LayerMask potentiallyWalkable = 1 << POTENTIALLY_WALKABLE_LAYER;
@@ -67,7 +69,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 			return false;
 		}
 
-		private bool RaycastForEnemy(Ray Ray)
+		bool RaycastForEnemy(Ray Ray)
 			{
 			RaycastHit hitInfo;
 			Physics.Raycast (Ray, out hitInfo, maxRaycastDepth);
