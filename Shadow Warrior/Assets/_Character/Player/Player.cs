@@ -14,7 +14,7 @@ namespace RPG.Character
 public class Player : MonoBehaviour, IDamageable {
 
 		[SerializeField] float maxHealthPoints = 100f;
-		[SerializeField] float damagePerHit = 10f;
+		[SerializeField] float baseDamage = 10f;
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController  animatorOverrideController = null; 
 
@@ -92,14 +92,16 @@ public class Player : MonoBehaviour, IDamageable {
 			}
 		}
 
-		private void AttemptSpecialAbility1 (Enemy enemy)
+		private void AttemptSpecialAbility1 (int abilityIndex, Enemy enemy)
 		{
 			var energyComponent = GetComponent<Energy> ();
+			var energyCost = abilities [abilityIndex].Use (abilityParams);
 
-			if (energyComponent.IsEnergyAvailable (10f)); // TODO read from S0
+			if (energyComponent.IsEnergyAvailable (energyCost))
 			{
-				energyComponent.ConsumeEnergy (10f);
-				// TODO Use the ability
+				energyComponent.ConsumeEnergy (energyCost);
+				var abilityParams = new AbilityUseParams(enemy, baseDamage)
+				abilities[abilityIndex].Use (abilityParams);
 			}
 		}
 
