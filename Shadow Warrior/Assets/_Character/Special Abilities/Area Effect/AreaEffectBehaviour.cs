@@ -7,6 +7,7 @@ using RPG.Core;
 public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 
 	AreaEffectConfig config;
+	ParticleSystem myParticleSystem;
 
 	public void SetConfig(AreaEffectConfig configToSet)
 	{
@@ -20,6 +21,22 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 	}
 
 	public void Use(AbilityUseParams useParams)
+	{
+		DealRadialDamage (useParams);
+		PlayParticleEffect ();
+	}
+
+	private void PlayParticleEffect ()
+	{
+		var prefab = Instantiate (config.GetParticlePrefab(), transform.position, Quaternion.identity);
+		//TODO decide if particle system attaches to player
+		myParticleSystem = prefab.GetComponent<ParticleSystem>();
+		myParticleSystem.Play ();
+		Destroy (prefab, myParticleSystem.main.duration);
+
+	}
+
+	private void DealRadialDamage(AbilityUseParams useParams)
 	{
 		print ("Area Effect used by " + gameObject.name);
 		// static sphere cast for targets
@@ -39,8 +56,5 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 				damegable.TakeDamage ();
 			}
 		}
-		// for each hit
-		// if damegable
-			//deal damage to target + player base damage
 	}
 }

@@ -25,9 +25,10 @@ public class Player : MonoBehaviour, IDamageable {
 		const string DEATH_TRIGGER = "Death";
 		const string ATTACK_TRIGGER = "Attack";
 
-		Animator animator;
-		float currentHealthPoints;
-		CameraRaycaster cameraRaycaster;
+		Enemy enemy = null;
+		Animator animator = null;
+		float currentHealthPoints = 0f;
+		CameraRaycaster cameraRaycaster = null;
 		float lastHitTime = 0f;
 
 		public float healthAsPercentage{ get { return currentHealthPoints / (maxHealthPoints); } }
@@ -38,10 +39,32 @@ public class Player : MonoBehaviour, IDamageable {
 			SetCurrentMaxHealth ();
 			PutWeaponInHand ();
 			SetupRuntimeAnimator ();
-			ability1.AddComponent (gameObject);
+			AttachInitialAbilities ();
+
 		}
 
-		public void TakeDamage(float damage)
+		private void AttachInitialAbilities()
+		{
+			for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++);
+			{
+				abilities[abilityIndex].AttachComponentTo(gameObject);
+			}
+	}
+
+		void Update()
+		{
+			if (healthAsPercentage > Mathf.Epsilon) 
+			{
+				ScanForAbilityKeyDown ();
+			}
+		}
+
+		private void ScanForAbilityKeyDown()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void AdjustHealth(float changePoints)
 		{
 			bool playerDies = (currentHealthPoints - damage <= 0);
 			ReduceHealth (damage);
@@ -104,8 +127,9 @@ public class Player : MonoBehaviour, IDamageable {
 			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 		}
 
-		void OnMouseOverEnemy(Enemy enemy)
+		void OnMouseOverEnemy(Enemy enemyToSet)
 		{
+			this.enemy = enemy;
 			if (Input.GetMouseButton (0) && IsTargetInRange(enemy.gameObject))
 			{
 				AttackTarget (enemy);
@@ -116,7 +140,7 @@ public class Player : MonoBehaviour, IDamageable {
 			}
 		}
 
-		private void AttemptSpecialAbility1 (int abilityIndex, Enemy enemy)
+		private void AttemptSpecialAbility1 (int abilityIndex)
 		{
 			var energyComponent = GetComponent<Energy> ();
 			var energyCost = abilities [abilityIndex].Use (abilityParams);
@@ -141,7 +165,7 @@ public class Player : MonoBehaviour, IDamageable {
 			}
 		}
 
-		private void AttackTarget (Enemy enemy)
+		private void AttackTarget ()
 			{
 			if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
 				{
