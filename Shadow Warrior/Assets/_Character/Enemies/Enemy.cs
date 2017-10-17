@@ -15,7 +15,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	[SerializeField] float attackRadius = 10.0f;
 	[SerializeField] private float damagePerShot = 10f;
-	[SerializeField] float secondsBetweenShots = 0.5f;
+	[SerializeField] float firingPeriodInS = 0.5f;
+	[SerializeField] float firingPeriodvariation = 0.1f;
 	[SerializeField] GameObject projectileToUse;
 	[SerializeField] GameObject projectileSocket;
 	[SerializeField] Vector3 aimOffset = new Vector3 (0, 1f, 0);
@@ -53,7 +54,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 		if (distanceToPlayer <= attackRadius && !isAttacking) 
 		{
 			isAttacking = true;
-			InvokeRepeating ("FireProjectile", 0f, secondsBetweenShots); // TODO switch to coroutines
+				float randomisedDelay = Random.Range(firingPeriodInS - firingPeriodvariation, firingPeriodInS + firingPeriodvariation);
+			InvokeRepeating ("FireProjectile", 0f, firingPeriodInS); // TODO switch to coroutines
 		}
 
 		if (distanceToPlayer > attackRadius)

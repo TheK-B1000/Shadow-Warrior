@@ -20,8 +20,11 @@ public class Player : MonoBehaviour, IDamageable {
 		[SerializeField] AnimatorOverrideController  animatorOverrideController = null; 
 
 		// Temporarily serialized for dubbing
-		[SerializeField] SpecialAbilityConfig ability1;
+		[SerializeField] SpecialAbility[] abilities;
 	
+		const string DEATH_TRIGGER = "Death";
+		const string ATTACK_TRIGGER = "Attack";
+
 		Animator animator;
 		float currentHealthPoints;
 		CameraRaycaster cameraRaycaster;
@@ -40,8 +43,8 @@ public class Player : MonoBehaviour, IDamageable {
 
 		public void TakeDamage(float damage)
 		{
-			ReduceHealth (damage);
 			bool playerDies = (currentHealthPoints - damage <= 0);
+			ReduceHealth (damage);
 			if (playerDies)  
 			{
 				StartCoroutine (KillPlayer ());
@@ -50,8 +53,10 @@ public class Player : MonoBehaviour, IDamageable {
 
 		IEnumerator KillPlayer()
 		{
-			Debug.Log("Death animation");
+			animator.SetTrigger (DEATH_TRIGGER);
+
 			yield return new WaitForSecondsRealtime (2f); // todo use auddio clip length (optional)
+
 			SceneManager.LoadSceneMode(0);
 			// play death sound (optional)
 		}
@@ -140,7 +145,7 @@ public class Player : MonoBehaviour, IDamageable {
 			{
 			if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
 				{
-					animator.SetTrigger("Attack"); // TODO make const
+					animator.SetTrigger(ATTACK_TRIGGER); // TODO make const
 					enemy.TakeDamage (damagePerHit);
 					lastHitTime = Time.time;
 				}
