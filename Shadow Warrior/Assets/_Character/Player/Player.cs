@@ -13,9 +13,8 @@ using RPG.Core;
 
 namespace RPG.Character
 {
-	public class Player : MonoBehaviour, IDamageable
+	public class Player : MonoBehaviour
 	{
-
 		[SerializeField] float baseDamage = 10f;
 		[SerializeField] Weapon currentWeaponConfig = null;
 		[SerializeField] AnimatorOverrideController  animatorOverrideController = null; 
@@ -42,7 +41,6 @@ namespace RPG.Character
 		void Start ()
 		{
 			RegisterForMouseClick ();
-			SetCurrentMaxHealth ();
 			PutWeaponInHand (currentWeaponConfig);
 			SetAttackAnimation ();
 			AttachInitialAbilities ();
@@ -70,7 +68,8 @@ namespace RPG.Character
 
 		void Update()
 		{
-			if (healthAsPercentage > Mathf.Epsilon) 
+			var healthPercentage = GetComponent<HealthSystem> ().healthAsPercentage;
+			if (healthPercentage > Mathf.Epsilon) 
 			{
 				ScanForAbilityKeyDown();
 			}
@@ -87,10 +86,7 @@ namespace RPG.Character
 			}
 		}
 	
-		private void SetCurrentMaxHealth ()
-			{
-				currentHealthPoints = maxHealthPoints;
-			}
+
 
 		private void SetAttackAnimation ()
 			{
@@ -146,7 +142,6 @@ namespace RPG.Character
 				{
 					SetAttackAnimation();
 					animator.SetTrigger(ATTACK_TRIGGER);
-					enemy.TakeDamage(CalculateDamage());
 					lastHitTime = Time.time;
 				}
 			}

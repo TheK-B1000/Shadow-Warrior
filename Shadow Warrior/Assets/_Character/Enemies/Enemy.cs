@@ -6,7 +6,7 @@ using RPG.Core; // TODO consider re-wire
 
 namespace RPG.Character
 {
-	public class Enemy : MonoBehaviour, IDamageable 
+	public class Enemy : MonoBehaviour, IDamageable //TODO remove interface
 	{
 		[SerializeField] float chaseRadius = 5.0f;
 
@@ -24,18 +24,15 @@ namespace RPG.Character
 		void Start()
 		{
 			player = FindObjectOfType<Player>();
-			currentHealthPoints = maxHealthPoints;
 		}
 
+		public void TakeDamage(float amount)
+		{
+			// TODO remove
+		}
 
 		void Update ()
 			{
-				if (player.healthAsPercentage <= Mathf.Epsilon)
-				{
-					StopAllCoroutines();
-					Destroy (this);
-				}
-
 			float distanceToPlayer = Vector3.Distance (player.transform.position, transform.position);
 			if (distanceToPlayer <= attackRadius && !isAttacking) 
 			{
