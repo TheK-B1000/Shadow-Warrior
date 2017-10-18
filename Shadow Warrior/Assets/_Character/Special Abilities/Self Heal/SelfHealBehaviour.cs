@@ -7,21 +7,17 @@ namespace RPG.Character
 	public class SelfHealBehaviour :AbilityBehaviour
 		{
 			Player player = null;
-			AudioSource audioSource = null;
 
 			void Start()
-			{
-				player = GetComponent<Player> ();
-				audioSource = GetComponent<AudioSource> ();
-			}
-			
+				{
+					player = GetComponent<Player> ();
+				}
 
 		public override void Use(AbilityUseParams useParams)
 			{
+			PlayAbilitySound ();
 			player.Heal ((config as SelfHealConfig).GetExtraHealth ());
-			audioSource.clip = (config as SelfHealConfig).GetAudioClip ();
-				audioSource.Play ();
-				PlayParticleEffect ();
+			PlayParticleEffect ();
 			}
 	}
 }

@@ -6,21 +6,12 @@ namespace RPG.Character
 {
 	public class PowerAttackBehaviour : AbilityBehaviour
 	{
-		AudioSource audioSource = null;
-
-
-		// Use this for initialization
-		void Start () {
-			print ("Power Attack behaviour attached to " + gameObject.name);
-			audioSource = GetComponent<AudioSource>();
-		}
-
+		
 		public override void Use(AbilityUseParams useParams)
 		{
+			PlayAbilitySound ();
 			DealDamage(useParams);
 			PlayParticleEffect();
-			audioSource.clip = config.GetAudioClip();
-			audioSource.Play();
 		}
 
 		private void DealDamage(AbilityUseParams useParams)

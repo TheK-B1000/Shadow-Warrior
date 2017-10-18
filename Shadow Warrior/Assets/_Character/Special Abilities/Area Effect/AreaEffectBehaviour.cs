@@ -5,23 +5,14 @@ using RPG.Character;
 using RPG.Core;
 using System;
 
-public class AreaEffectBehaviour : AbilityBehaviour {
-
-	ParticleSystem myParticleSystem;
-	AudioSource audioSource = null;
-
-	// Use this for initialization
-	void Start ()
-	{
-		audioSource = GetComponent<AudioSource>();
-	}
+public class AreaEffectBehaviour : AbilityBehaviour 
+{
 		
 	public override void Use(AbilityUseParams useParams)
 	{
+		PlayAbilitySound ();
 		DealRadialDamage (useParams);
 		PlayParticleEffect ();
-		audioSource.clip = config.GetAudioClip ();
-		audioSource.Play();
 	}
 
 	private void DealRadialDamage(AbilityUseParams useParams)

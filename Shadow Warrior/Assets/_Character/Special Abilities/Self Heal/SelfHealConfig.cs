@@ -10,11 +10,9 @@ namespace RPG.Character
 		[Header("Self Heal Speific")]
 		[SerializeField] float extraHealth= 50f;
 
-		public override void AttachComponentTo(GameObject gameObjectToattachTo)
+		public override AbilityBehaviour GetBehaviourComponent(GameObject objectToAttachTo)
 		{
-			var behaviourComponent = gameObjectToattachTo.AddComponent<SelfHealBehaviour>();
-			behaviourComponent.SetConfig(this);
-			behaviour = behaviourComponent;
+			return objectToAttachTo.AddComponent<SelfHealBehaviour>();
 		}
 
 		public float GetExtraHealth()

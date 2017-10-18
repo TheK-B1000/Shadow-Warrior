@@ -40,5 +40,13 @@ public abstract class AbilityBehaviour : MonoBehaviour {
 			Destroy (particlePrefab);
 			yield return new WaitForEndOfFrame();
 		}
+
+		protected void PlayAbilitySound()
+		{
+			var abilitySound = config.GetRandomAbilitySound (); // todo change to random clip
+			var audioSource = GetComponent<AudioSource>();
+			audioSource.PlayOneShot (abilitySound);
+	
+		}
 	}
 }
