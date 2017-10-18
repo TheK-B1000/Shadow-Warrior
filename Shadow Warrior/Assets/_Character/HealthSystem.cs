@@ -17,7 +17,7 @@ public class HealthSystem : MonoBehaviour
 
 			const string DEATH_TRIGGER = "Death";
 
-			float currentHealthPoints = 0f;
+			float currentHealthPoints;
 			Animator animator;
 			AudioSource audioSource;
 			CharacterMovement characterMovement;

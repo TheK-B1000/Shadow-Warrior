@@ -22,17 +22,13 @@ namespace RPG.Character
 		[SerializeField] float criticalHitMultiplier = 1.25f;
 		[SerializeField] ParticleSystem criticalHitParticle = null;
 
-		// Temporarily serialized for dubbing
-		[SerializeField] AbilityConfig[] abilities;
-	
-
 		const string ATTACK_TRIGGER = "Attack";
 		const string DEFAULT_ATTACK = "DEFAULT_ATTACK";
 
 
 		Enemy enemy = null;
-		AudioSource audioSource = null;
 		Animator animator = null;
+		SpecialAbilities abilities;
 
 		CameraRaycaster cameraRaycaster = null;
 		float lastHitTime = 0f;
@@ -40,10 +36,11 @@ namespace RPG.Character
 
 		void Start ()
 		{
+			abilities = GetComponent<SpecialAbilities> ();
+
 			RegisterForMouseClick ();
 			PutWeaponInHand (currentWeaponConfig);
 			SetAttackAnimation ();
-			AttachInitialAbilities ();
 
 		}
 
@@ -57,14 +54,7 @@ namespace RPG.Character
 			weaponObject.transform.localPosition = currentWeaponConfig.gripTransform.localPosition;
 			weaponObject.transform.localRotation = currentWeaponConfig.gripTransform.localRotation;
 		}
-
-		private void AttachInitialAbilities()
-		{
-			for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
-			{
-				abilities[abilityIndex].AttachAbilityTo(gameObject);
-			}
-	}
+			
 
 		void Update()
 		{
@@ -77,11 +67,11 @@ namespace RPG.Character
 
 		private void ScanForAbilityKeyDown()
 		{
-			for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++) 
+			for (int keyIndex = 1; keyIndex < abilities.GetNumberOfAbilities(); keyIndex++) 
 			{
 				if (Input.GetKeyDown(keyIndex.ToString())) 
 				{
-					AttemptSpecialAbility(keyIndex);
+					abilities.AttemptSpecialAbility(keyIndex);
 				}
 			}
 		}
@@ -119,23 +109,10 @@ namespace RPG.Character
 			}
 			else if (Input.GetMouseButtonDown(1))
 			{
-				AttemptSpecialAbility(0);
+				abilities.AttemptSpecialAbility(0);
 			}
 		}
-
-		private void AttemptSpecialAbility(int abilityIndex)
-		{
-			var energyComponent = GetComponent<Energy>();
-			var energyCost = abilities[abilityIndex].GetEnergyCost();
-
-			if (energyComponent.IsEnergyAvailable (energyCost))
-			{
-				energyComponent.ConsumeEnergy(energyCost);
-				var abilityParams = new AbilityUseParams(enemy, baseDamage);
-				abilities[abilityIndex].Use(abilityParams);
-			}
-		}
-
+			
 		private void AttackTarget ()
 			{
 			if (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())
