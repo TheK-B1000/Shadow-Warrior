@@ -5,13 +5,13 @@ using UnityEngine;
 namespace RPG.Character
 {
 	[CreateAssetMenu(menuName = ("RPG/Special Ability/Power Attack"))]
-	public class AreaEffectConfig : SpecialAbility
+	public class AreaEffectConfig : AbilityConfig
 	{
 		[Header("Area Effect Speific")]
 		[SerializeField] float radius = 5f;
 		[SerializeField] float damageToEachTarget = 15f;
 
-		public override ISpecialAbility AddComponent (GameObject gameObjectToattachTo)
+		public override void AttachComponentTo (GameObject gameObjectToattachTo)
 		{
 			var behaviourComponent = gameObjectToattachTo.AddComponent<AreaEffectBehaviour> ();
 			behaviourComponent.SetConfig(this);

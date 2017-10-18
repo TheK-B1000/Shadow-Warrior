@@ -3,42 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Character;
 using RPG.Core;
+using System;
 
-public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
+public class AreaEffectBehaviour : AbilityBehaviour {
 
-	AreaEffectConfig config;
 	ParticleSystem myParticleSystem;
 	AudioSource audioSource = null;
-
-
-	public void SetConfig(AreaEffectConfig configToSet)
-	{
-		this.config = configToSet;
-	}
 
 	// Use this for initialization
 	void Start ()
 	{
-		AudioSource = GetComponent<AudioSource>();
+		audioSource = GetComponent<AudioSource>();
 	}
-
-	public void Use(AbilityUseParams useParams)
+		
+	public override void Use(AbilityUseParams useParams)
 	{
 		DealRadialDamage (useParams);
 		PlayParticleEffect ();
-		AudioSource.PlayClipAtPoint = config.GetAudioClip ();
-		AudioSource.PlayClipAtPoint ();
-	}
-
-	private void PlayParticleEffect ()
-	{
-		var particlePrefab = config.GetParticlePrefab ();
-		var prefab = Instantiate (config.GetParticlePrefab(), transform.position, particlePrefab.transform.rotation);
-		//TODO decide if particle system attaches to player
-		myParticleSystem = prefab.GetComponent<ParticleSystem>();
-		myParticleSystem.Play ();
-		Destroy (prefab, myParticleSystem.main.duration);
-
+		audioSource.clip = config.GetAudioClip ();
+		audioSource.Play();
 	}
 
 	private void DealRadialDamage(AbilityUseParams useParams)
@@ -47,9 +30,9 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 		// static sphere cast for targets
 		RaycastHit[] hits = Physics.SphereCastAll(
 			transform.position,
-			config.GetRadius(),
-			Vector3.useParams,
-			config.GetRadius()
+			(config as AreaEffectConfig).GetRadius(),
+			Vector3.up,
+			(config as AreaEffectConfig).GetRadius()
 		);
 
 		foreach (RaycastHit hit in hits)
@@ -58,8 +41,8 @@ public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility {
 			bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
 			if (damegable != null && !hitPlayer) 
 			{
-				float damageToDeal = useParams.baseDamage + config.GetDamageToEachTarget ();
-				damegable.TakeDamage ();
+				float damageToDeal = useParams.baseDamage + (config as AreaEffectConfig).GetDamageToEachTarget();
+				damegable.TakeDamage (damageToDeal);
 			}
 		}
 	}

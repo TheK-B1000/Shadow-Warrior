@@ -8,11 +8,11 @@ namespace RPG.Character
 [RequireComponent (typeof (NavMeshAgent))]
 [RequireComponent (typeof (AICharacterControl))]
 [RequireComponent (typeof (ThirdPersonCharacter))]
-public class PlayerMovement : MonoBehaviour{
+public class PlayerMovement : MonoBehaviour
+	{
 
-
-	    ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
-	    CameraRaycaster cameraRaycaster;
+	    ThirdPersonCharacter thirdPersonCharacter = null;   // A reference to the ThirdPersonCharacter on the object
+	    CameraUI.CameraRaycaster cameraRaycaster = null;
 	    Vector3 clickPoint;
 		AICharacterControl aiCharacterControl = null;
 		GameObject walkTarget = null;
@@ -24,8 +24,7 @@ public class PlayerMovement : MonoBehaviour{
 			aiCharacterControl = GetComponent<AICharacterControl> ();
 			walkTarget = new GameObject ("walkTarget");
 
-			cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
-			cameraRaycaster.onMouseOverPotentiallyWalkable += onMouseOverPotentiallyWalkable;
+			cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
 			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 	    }
 			
@@ -40,9 +39,9 @@ public class PlayerMovement : MonoBehaviour{
 
 		void OnMouseOverEnemy (Enemy enemy)
 		{
-			if (Input.GetMouseButton (0)) || Input.GetMouseButtonDown(1);
+			if (Input.GetMouseButton (0) || Input.GetMouseButtonDown(1))
 			{
-				aiCharacterControl.SetTarget (walkTarget.transform);
+				aiCharacterControl.SetTarget(enemy.transform);
 			}
 		}
 
@@ -59,7 +58,5 @@ public class PlayerMovement : MonoBehaviour{
 
 			thirdPersonCharacter.Move(movement, false, false);
 		}
-
-
 	}
 }

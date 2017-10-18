@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using RPG.Core; // TODO consider re-wire
 using RPG.Weapons; // TODO consider re-wire
 
@@ -35,10 +36,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 		}
 	}
 
-	void Start(){
-		player = FindObjectOfType<Player> ();
-		player = GameObject.FindGameObjectWithTag ("Player");
-		aiCharacterControl = GetComponent<AICharacterControl> ();
+	void Start()
+	{
+		player = FindObjectOfType<Player>();
+		aiCharacterControl = GetComponent<AICharacterControl>();
+		currentHealthPoints = maxHealthPoints;
 	}
 
 

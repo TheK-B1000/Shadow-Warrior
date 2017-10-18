@@ -2,30 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG.Character;
+namespace RPG.Character
 {
-public class SelfHealBehaviour : MonoBehaviour, ISpecialAbility
-	{
-		SelfHealConfig config = null;
-		Player player = null;
-		AudioSource audioSource = null;
-
-		void Start()
+	public class SelfHealBehaviour :AbilityBehaviour
 		{
-			player = GetComponent<player> ();
-		audioSource = GetComponent<AudioSource> ();
-		}
+			Player player = null;
+			AudioSource audioSource = null;
 
-		public void SetConfig(SealHealConfig configToSet)
-		{
-			this.SetConfig = configToSet;
-		}
+			void Start()
+			{
+				player = GetComponent<Player> ();
+				audioSource = GetComponent<AudioSource> ();
+			}
+			
 
-		public void Use(AbilityUseParams useParams)
-		{
-			player.Heal(config.GetExtraHealth());
-			audioSource.clip = config.GetAudioClip ();
-			audioSource.Play ();
-		}
+		public override void Use(AbilityUseParams useParams)
+			{
+			player.Heal ((config as SelfHealConfig).GetExtraHealth ());
+			audioSource.clip = (config as SelfHealConfig).GetAudioClip ();
+				audioSource.Play ();
+				PlayParticleEffect ();
+			}
 	}
 }

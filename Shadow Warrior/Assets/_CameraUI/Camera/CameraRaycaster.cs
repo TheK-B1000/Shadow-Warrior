@@ -8,30 +8,20 @@ namespace RPG.CameraUI
 {
 public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 {
-	[SerializeField] Vector2 cursorHotspot = new Vector2 (0, 0);
 	[SerializeField] Texture2D walkCursor = null;
 	[SerializeField] Texture2D enemyCursor = null;
+	[SerializeField] Vector2 cursorHotspot = new Vector2 (0, 0);
 
 	const int POTENTIALLY_WALKABLE_LAYER = 8;
     float maxRaycastDepth = 100f; // Hard coded value
 
 	Rect currentScrenRect; 
+
 	public delegate void OnMouseOverTerrain(Vector3 destination); 
-	public event OnMouseOverTerrain notifyMouseOverTerrainObservers;
+	public event OnMouseOverTerrain onMouseOverPotentiallyWalkable;
 
 	public delegate void OnMouseOverEnemy(Enemy enemy); 
-	public event OnMouseOverEnemy notifyMouseOverEnemyObservers;
-
-	// TODO remove old delegates below
-	// Setup delegates for broadcasting layer changes to other classes
-    public delegate void OnCursorLayerChange(int newLayer); // declare new delegate type
-    public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
-
-	public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
-	public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
-
-	public delegate void OnRightClick(RaycastHit raycastHit, int layerHit); // declare new delegate type
-	public event OnClickPriorityLayer notifyRightClickObservers; // instantiate an observer set
+	public event OnMouseOverEnemy onMouseOverEnemy;
 
     void Update()
 		{
@@ -46,33 +36,18 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 
 		void PerformRaycasts()
 		{
-			if (currentScrenRect.Contains (Input.mousePosition)) {
+			if (currentScrenRect.Contains (Input.mousePosition))
+			{
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				if (RaycastForEnemy (ray)) {
-					return;
-				}
-				if (RaycastForPotentiallyWalkable (ray)) {return;}
+				if (RaycastForEnemy (ray)) {return;}
+				if (RaycastForPotentiallyWalkable(ray)) {return;}
 			}
 		}
 
-		bool RaycastForPotentiallyWalkable(Ray Ray)
-			{
+		bool RaycastForEnemy(Ray ray)
+		{
 			RaycastHit hitInfo;
-			LayerMask potentiallyWalkable = 1 << POTENTIALLY_WALKABLE_LAYER;
-			bool potentiallyWalkableHit = Physics.Raycast (Ray, out hitInfo, maxRaycastDepth, potentiallyWalkableLayer);
-				if (potentiallyWalkableHit)
-				{
-					Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
-					onMouseOverPotentiallyWalkable(hitInfo.point);
-					return true;
-				}
-			return false;
-		}
-
-		bool RaycastForEnemy(Ray Ray)
-			{
-			RaycastHit hitInfo;
-			Physics.Raycast (Ray, out hitInfo, maxRaycastDepth);
+			Physics.Raycast (ray, out hitInfo, maxRaycastDepth);
 			var gameObject = hitInfo.collider.gameObject;
 			var enemyHit = gameObject.GetComponent<Enemy> ();
 			if (enemyHit)
@@ -84,7 +59,18 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 			return false;
 		}
 			
-
-	
+		private bool RaycastForPotentiallyWalkable(Ray ray)
+		{
+			RaycastHit hitInfo;
+			LayerMask potentiallyWalkableLayer = 1 << POTENTIALLY_WALKABLE_LAYER;
+			bool potentiallyWalkableHit = Physics.Raycast (ray, out hitInfo, maxRaycastDepth, potentiallyWalkableLayer);
+				if (potentiallyWalkableHit)
+				{
+					Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
+					onMouseOverPotentiallyWalkable(hitInfo.point);
+					return true;
+				}
+			return false;
+		}
 	}
 }

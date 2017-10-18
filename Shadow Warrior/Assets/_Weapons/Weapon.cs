@@ -4,47 +4,47 @@ using UnityEngine;
 
 namespace RPG.Weapons
 {
-[CreateAssetMenu(menuName = ("RPG/Weapon"))]
-public class Weapon : ScriptableObject {
+	[CreateAssetMenu(menuName = ("RPG/Weapon"))]
+	public class Weapon : ScriptableObject
+	{
+			public Transform gripTransform;
 
-		public Transform gripTransform;
+			[SerializeField] GameObject weaponPrefab;
+			[SerializeField] AnimationClip attackAnimation;
+			[SerializeField] float minTimeBetweenHits = .5f;
+			[SerializeField] float maxAttackRange = 2f;
+			[SerializeField] float additionalDamage = 10f;
 
-		[SerializeField] GameObject weaponPrefab;
-		[SerializeField] AnimationClip attackAnimation;
-		[SerializeField] float minTimeBetweenHits = .5f;
-		[SerializeField] float maxAttackRange = 2f;
-		[SerializeField] float additionalDamage;
+			public float GetMinTimeBetweenHits()
+			{
+				//TODO consider whether we take animation time into account
+				return minTimeBetweenHits;
+			}
 
-		public float GetMinTimeBetweenHits()
-		{
-			//TODO consider whether we take animation time into account
-			return minTimeBetweenHits;
-		}
+			public float GetMaxAttackRange()
+			{
+				return maxAttackRange;
+			}
 
-		public float GetMaxAttackRange()
-		{
-			return maxAttackRange;
-		}
+			public GameObject GetWeaponPrefab()
+			{
+				return weaponPrefab;
+			}
+			public AnimationClip GetAttackAnimClip()
+			{
+				RemoveAnimationEvents (); 
+				return attackAnimation;
+			}
 
-		public GameObject GetWeaponPrefab()
-		{
-			return weaponPrefab;
-		}
-		public AnimationClip GetAttackAnimClip()
-		{
-			RemoveAnimationEvents (); 
-			return attackAnimation;
-		}
+			public float GetAdditionalDamage()
+			{
+			return additionalDamage;
+			}
 
-		public float GetAdditionalDamage()
-		{
-
-		}
-
-		//So that asset packs cannot cause crashes
-		void RemoveAnimationEvents ()
-		{
-			attackAnimation.events = new AnimationEvent[0];
+			//So that asset packs cannot cause crashes
+			private void RemoveAnimationEvents ()
+			{
+				attackAnimation.events = new AnimationEvent[0];
 		}
 	}
 }

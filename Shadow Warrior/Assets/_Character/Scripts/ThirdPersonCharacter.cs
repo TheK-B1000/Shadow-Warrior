@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RPG.Character;
+namespace RPG.Character
 {
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(CapsuleCollider))]

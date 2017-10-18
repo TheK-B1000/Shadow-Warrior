@@ -12,7 +12,8 @@ using RPG.Weapons;
 
 namespace RPG.Character
 {
-public class Player : MonoBehaviour, IDamageable {
+public class Player : MonoBehaviour, IDamageable
+	{
 
 		[SerializeField] float maxHealthPoints = 100f;
 		[SerializeField] float baseDamage = 10f;
@@ -21,27 +22,28 @@ public class Player : MonoBehaviour, IDamageable {
 		[SerializeField] AudioClip[] damageSounds;
 		[SerializeField] AudioClip[] deathSounds;
 		[Range (.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
-		[SerializeField] float criticalHitMultipler = 1.25f;
-		[SerializeField] ParticleSystem myParticleSystem = null;
+		[SerializeField] float criticalHitMultiplier = 1.25f;
+		[SerializeField] ParticleSystem criticalHitParticle = null;
 
 		// Temporarily serialized for dubbing
-		[SerializeField] SpecialAbility[] abilities;
+		[SerializeField] AbilityConfig[] abilities;
 	
 		const string DEATH_TRIGGER = "Death";
 		const string ATTACK_TRIGGER = "Attack";
 
 
 		Enemy enemy = null;
+		AudioSource audioSource = null;
 		Animator animator = null;
 		float currentHealthPoints = 0f;
 		CameraRaycaster cameraRaycaster = null;
 		float lastHitTime = 0f;
 
-		public float healthAsPercentage{ get { return currentHealthPoints / (maxHealthPoints); } }
+		public float healthAsPercentage{ get { return currentHealthPoints / maxHealthPoints; } }
 
 		void Start ()
 		{
-			AudioSource = GetComponent<AudioSource> ()
+			audioSource = GetComponent<AudioSource> ();
 
 			RegisterForMouseClick ();
 			SetCurrentMaxHealth ();
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour, IDamageable {
 
 		private void AttachInitialAbilities()
 		{
-			for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++);
+			for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
 			{
 				abilities[abilityIndex].AttachComponentTo(gameObject);
 			}
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour, IDamageable {
 		{
 			if (healthAsPercentage > Mathf.Epsilon) 
 			{
-				ScanForAbilityKeyDown ();
+				ScanForAbilityKeyDown();
 			}
 		}
 
@@ -71,39 +73,38 @@ public class Player : MonoBehaviour, IDamageable {
 		{
 			for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++) 
 			{
-				if (Input.GetKeyDown(keyIndex.ToString()))
+				if (Input.GetKeyDown(keyIndex.ToString())) 
+				{
+					AttemptSpecialAbility(keyIndex);
 				}
 			}
 		}
 
-		public void AdjustHealth(float changePoints)
+		public void TakeDamage(float damage)
 		{
-			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, max HealthPoints);
-			ReduceHealth (damage);
-			if (playerDies)  
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+			audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
+			audioSource.Play();
+		if (currentHealthPoints <= 0)  
 			{
-				StartCoroutine (KillPlayer ());
+				StartCoroutine (KillPlayer());
 			}
 		}
 		public void Heal(float points)
 		{
-			currentHealthPoints = Mathf.Clamp(currentHealthPoints + damage, 0f, max HealthPoints);
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints + points, 0f, maxHealthPoints);
 		}
 
 		IEnumerator KillPlayer()
 		{
 			animator.SetTrigger (DEATH_TRIGGER);
 
-			yield return new WaitForSecondsRealtime (2f); // todo use auddio clip length (optional)
+			audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
+			audioSource.Play();
 
-			SceneManager.LoadSceneMode(0);
-			// play death sound (optional)
-		}
+			yield return new WaitForSecondsRealtime (audioSource.clip.length); // todo use auddio clip length (optional)
 
-		private void ReduceHealth (float damage)
-		{
-			currentHealthPoints = Mathf.Clamp (currentHealthPoints - damage, 0f, maxHealthPoints);
-			//play sound
+			SceneManager.LoadScene(0);
 		}
 
 		private void SetCurrentMaxHealth ()
@@ -145,39 +146,27 @@ public class Player : MonoBehaviour, IDamageable {
 
 		void OnMouseOverEnemy(Enemy enemyToSet)
 		{
-			this.enemy = enemy;
+			this.enemy = enemyToSet;
 			if (Input.GetMouseButton (0) && IsTargetInRange(enemy.gameObject))
 			{
-				AttackTarget (enemy);
+				AttackTarget();
 			}
 			else if (Input.GetMouseButtonDown(1))
 			{
-				AttemptSpecialAbility1 (enemy);
+				AttemptSpecialAbility(0);
 			}
 		}
 
-		private void AttemptSpecialAbility1 (int abilityIndex)
+		private void AttemptSpecialAbility(int abilityIndex)
 		{
-			var energyComponent = GetComponent<Energy> ();
-			var energyCost = abilities [abilityIndex].Use (abilityParams);
+			var energyComponent = GetComponent<Energy>();
+			var energyCost = abilities[abilityIndex].GetEnergyCost();
 
 			if (energyComponent.IsEnergyAvailable (energyCost))
 			{
-				energyComponent.ConsumeEnergy (energyCost);
-				var abilityParams = new AbilityUseParams(enemy, baseDamage)
-				abilities[abilityIndex].Use (abilityParams);
-			}
-		}
-
-		void OnMouseClicked(RaycastHit raycastHit, int layerHit) 
-		{
-			if (layerHit == enemyLayer)
-			{
-				var enemy = raycastHit.collider.gameObject;
-					if (IsTargetInRange (enemy))
-					{
-						AttackTarget (enemy);
-					}
+				energyComponent.ConsumeEnergy(energyCost);
+				var abilityParams = new AbilityUseParams(enemy, baseDamage);
+				abilities[abilityIndex].Use(abilityParams);
 			}
 		}
 
@@ -193,12 +182,12 @@ public class Player : MonoBehaviour, IDamageable {
 
 		private float CalculateDamage()
 		{
-			bool is CriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
-			float damageBeforeCritical = baseDamage + weaponInUse.GetAdditionalDamage());
+			bool isCriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
+			float damageBeforeCritical = baseDamage + weaponInUse.GetAdditionalDamage();
 			if (isCriticalHit)
 			{
-			criticalHitParticle.Play();
-				return damageBeforeCritical * criticalHitMultipler;
+				criticalHitParticle.Play();
+				return damageBeforeCritical * criticalHitMultiplier;
 			}
 			else
 			{
@@ -211,10 +200,5 @@ public class Player : MonoBehaviour, IDamageable {
 				float distanceToTarget = (target.transform.position - transform.position).magnitude;
 				return distanceToTarget <= weaponInUse.GetMaxAttackRange();
 			}
-
-		public void DealDamage (float damage) 
-		{
-			print ("Damaged enemy");
 		}
-	}
 }

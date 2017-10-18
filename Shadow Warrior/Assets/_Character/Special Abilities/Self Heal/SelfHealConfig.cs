@@ -5,14 +5,14 @@ using UnityEngine;
 namespace RPG.Character
 {
 	[CreateAssetMenu(menuName = ("RPG/Special Ability/Self Heal"))]
-	public class SelfHealConfig : SpecialAbility 
+	public class SelfHealConfig : AbilityConfig
 	{
 		[Header("Self Heal Speific")]
 		[SerializeField] float extraHealth= 50f;
 
-		public override ISpecialAbility AddComponent (GameObject gameObjectToattachTo)
+		public override void AttachComponentTo(GameObject gameObjectToattachTo)
 		{
-			var behaviourComponent = gameObjectToattachTo.AddComponent<SelfHealBehaviour> ();
+			var behaviourComponent = gameObjectToattachTo.AddComponent<SelfHealBehaviour>();
 			behaviourComponent.SetConfig(this);
 			behaviour = behaviourComponent;
 		}

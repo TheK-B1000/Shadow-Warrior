@@ -10,14 +10,14 @@ namespace RPG.Character
 	public class PlayerHealthBar : MonoBehaviour
 	{
 
-		Image healthOrb;;
-    public Player player;
+		Image healthOrb;
+    	Player player;
 
     // Use this for initialization
     void Start()
     {
         player = FindObjectOfType<Player>();
-        healthBarImage = GetComponent<RawImage>();
+        healthOrb = GetComponent<Image>();
     }
 
     // Update is called once per frame
