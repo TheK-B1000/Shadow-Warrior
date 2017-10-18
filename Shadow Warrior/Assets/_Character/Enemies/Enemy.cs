@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	bool isAttacking = false;
 	float currentHealthPoints = 100f;
-	AICharacterControl aiCharacterControl = null;
 	Player player = null;
 
 
@@ -38,7 +37,6 @@ public class Enemy : MonoBehaviour, IDamageable {
 	void Start()
 	{
 		player = FindObjectOfType<Player>();
-		aiCharacterControl = GetComponent<AICharacterControl>();
 		currentHealthPoints = maxHealthPoints;
 	}
 
@@ -67,12 +65,11 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 		if (distanceToPlayer <= chaseRadius) 
 		{
-			//print (gameObject.name + "move to player");
-			aiCharacterControl.SetTarget(player.transform);
+			//aiCharacterControl.SetTarget(player.transform);
 		} 
 		else 
 		{
-			aiCharacterControl.SetTarget (transform);
+			//aiCharacterControl.SetTarget (transform);
 		}
 	}
 
