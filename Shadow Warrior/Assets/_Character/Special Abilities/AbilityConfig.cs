@@ -51,7 +51,7 @@ namespace RPG.Character
 			return particlePrefab;
 		}
 
-		public AudioClips GetRandomAbilitySound()
+		public AudioClip GetRandomAbilitySound()
 		{
 			return audioClips [Random.Range (0, audioClips.Length)];
 		}

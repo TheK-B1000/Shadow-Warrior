@@ -53,11 +53,16 @@ public class Player : MonoBehaviour, IDamageable
 
 		}
 
+		public void PutWeaponInHand(Weapon weaponConfig)
+		{
+
+		}
+
 		private void AttachInitialAbilities()
 		{
 			for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
 			{
-				abilities[abilityIndex].AttachComponentTo(gameObject);
+				abilities[abilityIndex].AttachAbilityTo(gameObject);
 			}
 	}
 
