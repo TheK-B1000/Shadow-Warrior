@@ -35,11 +35,11 @@ public class CharacterMovement : MonoBehaviour
 		{
 			if (agent.remainingDistance > agent.stoppingDistance) 
 			{
-				character.Move(agent.desiredVelocity, false, false);
+				character.Move(agent.desiredVelocity, false);
 			}
 			else
 			{
-				character.Move (Vector3.zero, false, false);
+				character.Move(Vector3.zero, false);
 			}
 		}
 

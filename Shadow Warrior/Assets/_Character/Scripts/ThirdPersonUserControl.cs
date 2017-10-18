@@ -68,7 +68,7 @@ namespace RPG.Character
 #endif
 
             // pass all parameters to the character control script
-            m_Character.Move(m_Move, crouch, m_Jump);
+            m_Character.Move(m_Move, m_Jump);
             m_Jump = false;
         }
     }
