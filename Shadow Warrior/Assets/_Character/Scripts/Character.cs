@@ -82,6 +82,11 @@ namespace RPG.Character
 				}
 			}
 
+			public float GetAnimSpeedMultiplier()
+			{
+				return animator.speed;
+			}
+
 			public void Kill()
 			{
 				isAlive = false;
@@ -101,7 +106,7 @@ namespace RPG.Character
 			{
 				SetForwardAndTurn(movement);
 				ApplyExtraTurnRotation();
-				UpdateAnimator(movement);
+				UpdateAnimator();
 			}
 			
 			void SetForwardAndTurn (Vector3 movement)
@@ -115,9 +120,8 @@ namespace RPG.Character
 				forwardAmount = localMove.z;
 			}			
 
-			void UpdateAnimator(Vector3 move)
+			void UpdateAnimator()
 			{
-				// update the animator parameters
 				animator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
 				animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
 				animator.speed = animationSpeedMultiplier;
