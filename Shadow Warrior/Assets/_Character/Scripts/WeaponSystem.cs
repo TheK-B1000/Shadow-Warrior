@@ -33,8 +33,31 @@ namespace RPG.Character
 		// Update is called once per frame
 		void Update () 
 		{
-			
+			bool targetIsDead;
+			bool targetIsOutOfRange;
+			if (target == null)
+			{
+				targetIsDead = false;
+				targetIsOutOfRange = false;
+			}
+			else
+			{
+				var targethealth = target.GetComponent<HealthSystem> ().healthAsPercentage;
+				targetIsDead = targethealth <= Mathf.Epsilon;
+
+				var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+				targetIsOutOfRange = distanceToTarget > currentWeaponConfig.GetMaxAttackRange ();
+			}
+
+			float characterHealth = GetComponent<HealthSystem> ().healthAsPercentage;
+			bool characterIsDead = (characterHealth <= Mathf.Epsilon);
+
+			if (characterIsDead || targetIsOutOfRange || targetIsDead) 
+			{
+				StopAllCoroutines ();
+			}
 		}
+	
 
 
 		public void PutWeaponInHand(WeaponConfig weaponToUse)
