@@ -5,17 +5,6 @@ using RPG.Core;
 
 namespace RPG.Character
 {
-	public struct AbilityUseParams
-	{
-		public IDamageable target;
-		public float baseDamage;
-
-		public AbilityUseParams(IDamageable target, float baseDamage)
-		{
-			this.target = target;
-			this.baseDamage = baseDamage;
-		}
-	}
 
 	public abstract class AbilityConfig : ScriptableObject 
 	{

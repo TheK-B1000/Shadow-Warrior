@@ -28,7 +28,7 @@ public class AreaEffectBehaviour : AbilityBehaviour
 
 		foreach (RaycastHit hit in hits)
 		{
-			var damegable = hit.collider.gameObject.GetComponent<IDamageable> (); 
+			var damegable = hit.collider.gameObject.GetComponent<HealthSystem> (); 
 			bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
 			if (damegable != null && !hitPlayer) 
 			{

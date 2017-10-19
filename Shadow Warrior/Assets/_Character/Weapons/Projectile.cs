@@ -37,11 +37,13 @@ public class Projectile : MonoBehaviour {
 			var layerCollidedWith = collision.gameObject.layer;
 			if (shooter && layerCollidedWith != shooter.layer) 
 			{
-				DamageDamegables (collision);
+				//DamageDamegables (collision);
 			}
 		}
 
-		private void DamageDamegables (Collision collision)
+
+		//TODO Re-Implement 
+		/* private void DamageDamegables (Collision collision)
 		{
 			Component damageableComponent = collision.gameObject.GetComponent (typeof(IDamageable));
 			if (damageableComponent) 
@@ -49,7 +51,7 @@ public class Projectile : MonoBehaviour {
 					(damageableComponent as IDamageable).TakeDamage (damageCaused);
 			}
 			Destroy (gameObject, Destroy_Delay);
-		}
+		}*/
 			
 	}
 }
