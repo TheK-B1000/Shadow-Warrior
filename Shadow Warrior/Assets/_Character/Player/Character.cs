@@ -34,11 +34,11 @@ namespace RPG.Character
 			[SerializeField] float navMeshAgentStoppingDistance = 1.3f;
 
 			Animator animator;
-		    Vector3 clickPoint;
 			NavMeshAgent navMeshAgent;
 			Rigidbody myRigidbody;
 			float turnAmount;
 			float forwardAmount;
+			bool isAlive = true;
 
 			void Awake()
 			{
@@ -69,18 +69,10 @@ namespace RPG.Character
 				animator.runtimeAnimatorController = animatorController;
 				animator.avatar = characterAvatar;
 			}
-
-		    void Start()
-		    {
-		        CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-
-				cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
-				cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-		    }
-				
+	
 			void Update()
 			{
-				if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance) 
+				if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance && isAlive) 
 				{
 					Move(navMeshAgent.desiredVelocity);
 				}
@@ -90,37 +82,23 @@ namespace RPG.Character
 				}
 			}
 
-			//TODO move to PlayerControl
-			void OnMouseOverPotentiallyWalkable(Vector3 destination)
+			public void Kill()
 			{
-				if (Input.GetMouseButton (0)) 
-				{
-					navMeshAgent.SetDestination (destination);
-				}
+				isAlive = false;
+			}
 
-			}
-	
-			//TODO move to PlayerControl
-			void OnMouseOverEnemy (Enemy enemy)
+			public void SetDestination(Vector3 worldPos)
 			{
-				if (Input.GetMouseButton (0) || Input.GetMouseButtonDown(1))
-				{
-					navMeshAgent.SetDestination (enemy.transform.position);
-				}
+				navMeshAgent.destination = worldPos;
 			}
-			
+
 			public void Move(Vector3 movement)
 			{
 				SetForwardAndTurn(movement);
 				ApplyExtraTurnRotation();
 				UpdateAnimator(movement);
 			}
-
-			public void Kill()
-			{
-				// to allow death signaling	
-			}
-
+			
 			void SetForwardAndTurn (Vector3 movement)
 			{
 				if (movement.magnitude > moveThreshold) 
