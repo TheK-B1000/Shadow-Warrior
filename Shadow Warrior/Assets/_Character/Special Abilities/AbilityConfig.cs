@@ -36,9 +36,9 @@ namespace RPG.Character
 			behaviour = behaviourComponent;
 		}
 
-		public void Use(AbilityUseParams useParams)
+		public void Use(GameObject target)
 		{
-			behaviour.Use(useParams);
+			behaviour.Use();
 		}
 
 		public float GetEnergyCost()

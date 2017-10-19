@@ -8,14 +8,14 @@ using System;
 public class AreaEffectBehaviour : AbilityBehaviour 
 {
 		
-	public override void Use(AbilityUseParams useParams)
+	public override void Use(GameObject target)
 	{
 		PlayAbilitySound ();
-		DealRadialDamage (useParams);
+		DealRadialDamage ();
 		PlayParticleEffect ();
 	}
 
-	private void DealRadialDamage(AbilityUseParams useParams)
+	private void DealRadialDamage()
 	{
 		print ("Area Effect used by " + gameObject.name);
 		// static sphere cast for targets
@@ -32,7 +32,7 @@ public class AreaEffectBehaviour : AbilityBehaviour
 			bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
 			if (damegable != null && !hitPlayer) 
 			{
-				float damageToDeal = useParams.baseDamage + (config as AreaEffectConfig).GetDamageToEachTarget();
+				float damageToDeal = (config as AreaEffectConfig).GetDamageToEachTarget();
 				damegable.TakeDamage (damageToDeal);
 			}
 		}
