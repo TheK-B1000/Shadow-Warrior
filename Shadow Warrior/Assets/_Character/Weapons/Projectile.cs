@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO RPG.Core;
-using RPG.Core;
-
 namespace RPG.Character
 {
 public class Projectile : MonoBehaviour {

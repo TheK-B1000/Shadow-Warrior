@@ -5,12 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using RPG.CameraUI;
 
-// TODO consider re-wire
-using RPG.CameraUI; 
-using RPG.Core;
 
-// TODO extract weaponSystem 
 namespace RPG.Character
 {
 	public class PlayerMovement : MonoBehaviour
