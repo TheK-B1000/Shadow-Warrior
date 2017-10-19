@@ -11,18 +11,18 @@ namespace RPG.Character
 		
 		[SerializeField] float chaseRadius = 5.0f;
 
-		bool isAttacking = false; // TODO more rich state
 		PlayerMovement player = null;
+		Character character;
 		float currentWeaponRange;
+		float distanceToPlayer;
+
+		enum State { idle, patrolling, attacking, chasing }
+		State state = State.idle;
 
 		void Start()
 		{
+			character = GetComponent<Character> ();
 			player = FindObjectOfType<PlayerMovement>();
-		}
-
-		public void TakeDamage(float amount)
-		{
-			// TODO remove
 		}
 
 		void Update ()
@@ -30,6 +30,31 @@ namespace RPG.Character
 			float distanceToPlayer = Vector3.Distance (player.transform.position, transform.position);
 			WeaponSystem weaponSystem = GetComponent<WeaponSystem> ();
 			currentWeaponRange = weaponSystem.GetCurrentWeapon ().GetMaxAttackRange ();
+			if (distanceToPlayer > chaseRadius && state != State.patrolling)
+			{
+				// stop what we're doing
+				// start patrolling
+			}
+			if (distanceToPlayer <= chaseRadius && state != State.chasing) 
+			{
+				StopAllCoroutines ();
+				StartCoroutine(ChasePlayer());
+							}
+			if (distanceToPlayer <= currentWeaponRange && state != State.attacking)
+			{
+				// stop what we're doing
+				// attack the player
+			}
+		}
+
+		IEnumerator ChasePlayer()
+		{
+			state = State.chasing;
+			while (distanceToPlayer >= currentWeaponRange)
+			{
+				character.SetDestination (player.transform.position);
+				yield return new WaitForEndOfFrame ();
+			}
 		}
 		
 		void OnDrawGizmos()
