@@ -20,8 +20,7 @@ public class HealthSystem : MonoBehaviour
 			float currentHealthPoints;
 			Animator animator;
 			AudioSource audioSource;
-			CharacterMovement characterMovement;
-
+		Character character;
 			public float healthAsPercentage{ get { return currentHealthPoints / maxHealthPoints; } }
 
 			// Use this for initialization
@@ -29,7 +28,7 @@ public class HealthSystem : MonoBehaviour
 			{
 				animator = GetComponent<Animator> ();
 				audioSource = GetComponent<AudioSource> ();
-				characterMovement = GetComponent<CharacterMovement>();
+				character = GetComponent<Character>();
 
 			currentHealthPoints = maxHealthPoints;
 			}
@@ -68,7 +67,7 @@ public class HealthSystem : MonoBehaviour
 			IEnumerator KillCharacter()
 			{
 				StopAllCoroutines ();
-				characterMovement.Kill();
+				character.Kill();
 				animator.SetTrigger (DEATH_TRIGGER);
 
 				var playerComponent = GetComponent<Player> ();
