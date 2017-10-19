@@ -9,27 +9,33 @@ namespace RPG.Character
 	[RequireComponent (typeof (NavMeshAgent))]
 	public class Character : MonoBehaviour
 		{
-			[Header("Setup Settings")]
-			[SerializeField] Vector3 colliderCenter = new Vector3(0, 1.03f, 0);
-			[SerializeField] float colliderRadius = 0.2f;
-			[SerializeField] float colliderHeight = 2.03f;
-		
-
-			[Header("Setup Settings")]
+			[Header("Animator")]
 			[SerializeField] RuntimeAnimatorController animatorController;
 			[SerializeField] AnimatorOverrideController animatorOverrideController;
 			[SerializeField] Avatar characterAvatar;
 
-			[SerializeField] float stoppingDistance = 1f;
+			[Header("Audio")]
+			[SerializeField] float audioSourceSpatialBlend = 0.5f;
+
+			[Header("Capsule Collider")]
+			[SerializeField] Vector3 colliderCenter = new Vector3(0, 1.03f, 0);
+			[SerializeField] float colliderRadius = 0.2f;
+			[SerializeField] float colliderHeight = 2.03f;
+
+			[Header("Movement")]
 			[SerializeField] float moveSpeedMultiplier = .7f;
 			[SerializeField] float movingTurnSpeed = 360;
 			[SerializeField] float stationaryTurnSpeed = 180;
 			[SerializeField] float moveThreshold =1f;
 			[SerializeField] float animationSpeedMultiplier = 1.5f;
 	
+			[Header("Nav Mesh Agent")]
+			[SerializeField] float navMeshAgentSteeringSpeed = 1.0f;
+			[SerializeField] float navMeshAgentStoppingDistance = 1.3f;
+
 			Animator animator;
 		    Vector3 clickPoint;
-			NavMeshAgent agent;
+			NavMeshAgent navMeshAgent;
 			Rigidbody myRigidbody;
 			float turnAmount;
 			float forwardAmount;
@@ -46,21 +52,27 @@ namespace RPG.Character
 				capsuleCollider.radius = colliderRadius;
 				capsuleCollider.height = colliderHeight;
 
+				myRigidbody = GetComponent<Rigidbody> ();
+				myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+
+				navMeshAgent = gameObject.AddComponent<NavMeshAgent> ();
+				navMeshAgent.speed = navMeshAgentSteeringSpeed;
+				navMeshAgent.stoppingDistance = navMeshAgentStoppingDistance;
+				navMeshAgent.autoBraking = false;
+				navMeshAgent.updateRotation = false;
+				navMeshAgent.updatePosition = true;
+
+				var audioSource = gameObject.AddComponent<AudioSource> ();
+				audioSource.spatialBlend = audioSourceSpatialBlend;
+
 				animator = gameObject.AddComponent<Animator>();
 				animator.runtimeAnimatorController = animatorController;
-			animator.avatar = characterAvatar;
+				animator.avatar = characterAvatar;
 			}
 
 		    void Start()
 		    {
 		        CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-				myRigidbody = GetComponent<Rigidbody> ();
-				myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-
-				agent = GetComponent<NavMeshAgent> ();
-				agent.updateRotation = false;
-				agent.updatePosition = true;
-				agent.stoppingDistance = stoppingDistance;
 
 				cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
 				cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
@@ -68,9 +80,9 @@ namespace RPG.Character
 				
 			void Update()
 			{
-				if (agent.remainingDistance > agent.stoppingDistance) 
+				if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance) 
 				{
-					Move(agent.desiredVelocity);
+					Move(navMeshAgent.desiredVelocity);
 				}
 				else
 				{
@@ -78,20 +90,22 @@ namespace RPG.Character
 				}
 			}
 
+			//TODO move to PlayerControl
 			void OnMouseOverPotentiallyWalkable(Vector3 destination)
 			{
 				if (Input.GetMouseButton (0)) 
 				{
-					agent.SetDestination (destination);
+					navMeshAgent.SetDestination (destination);
 				}
 
 			}
-
+	
+			//TODO move to PlayerControl
 			void OnMouseOverEnemy (Enemy enemy)
 			{
 				if (Input.GetMouseButton (0) || Input.GetMouseButtonDown(1))
 				{
-					agent.SetDestination (enemy.transform.position);
+					navMeshAgent.SetDestination (enemy.transform.position);
 				}
 			}
 			
