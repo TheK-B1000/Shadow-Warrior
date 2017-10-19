@@ -17,7 +17,7 @@ namespace RPG.Character
 		[SerializeField] ParticleSystem criticalHitParticle = null;
 
 		Character character;
-		Enemy enemy = null;
+		EnemyAI enemy = null;
 		SpecialAbilities abilities;
 		WeaponSystem weaponSystem;
 
@@ -66,7 +66,7 @@ namespace RPG.Character
 			}
 		}
 
-		void OnMouseOverEnemy(Enemy enemyToSet)
+		void OnMouseOverEnemy(EnemyAI enemyToSet)
 		{
 			this.enemy = enemyToSet;
 			if (Input.GetMouseButton (0) && IsTargetInRange(enemy.gameObject))

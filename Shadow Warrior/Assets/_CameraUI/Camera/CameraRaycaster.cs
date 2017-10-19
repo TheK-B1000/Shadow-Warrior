@@ -20,7 +20,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 	public delegate void OnMouseOverTerrain(Vector3 destination); 
 	public event OnMouseOverTerrain onMouseOverPotentiallyWalkable;
 
-	public delegate void OnMouseOverEnemy(Enemy enemy); 
+	public delegate void OnMouseOverEnemy(EnemyAI enemy); 
 	public event OnMouseOverEnemy onMouseOverEnemy;
 
     void Update()
@@ -49,7 +49,7 @@ public class CameraRaycaster : MonoBehaviour // TODO Rename Cursor
 			RaycastHit hitInfo;
 			Physics.Raycast (ray, out hitInfo, maxRaycastDepth);
 			var gameObject = hitInfo.collider.gameObject;
-			var enemyHit = gameObject.GetComponent<Enemy> ();
+			var enemyHit = gameObject.GetComponent<EnemyAI> ();
 			if (enemyHit)
 			{
 				Cursor.SetCursor (enemyCursor, cursorHotspot, CursorMode.Auto);
