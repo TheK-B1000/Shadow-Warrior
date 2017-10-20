@@ -36,19 +36,6 @@ public class Projectile : MonoBehaviour {
 			{
 				//DamageDamegables (collision);
 			}
-		}
-
-
-		//TODO Re-Implement 
-		/* private void DamageDamegables (Collision collision)
-		{
-			Component damageableComponent = collision.gameObject.GetComponent (typeof(IDamageable));
-			if (damageableComponent) 
-			{
-					(damageableComponent as IDamageable).TakeDamage (damageCaused);
-			}
-			Destroy (gameObject, Destroy_Delay);
-		}*/
-			
+		}	
 	}
 }
