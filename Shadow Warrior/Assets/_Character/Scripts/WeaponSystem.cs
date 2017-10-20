@@ -90,7 +90,7 @@ namespace RPG.Character
 
 				while (attackersStillAlive && targetStillAlive) 
 				{
-					float weaponHitPeriod = currentWeaponConfig.GetMinTimeBetweenHits ();
+					float weaponHitPeriod = currentWeaponConfig.GetTimeBetweenAnimationCycles ();
 				float timeToWait = weaponHitPeriod * character.GetAnimSpeedMultiplier();
 					bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
@@ -147,7 +147,7 @@ namespace RPG.Character
 			
 		private void AttackTarget ()
 		{
-			if (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())
+			if (Time.time - lastHitTime > currentWeaponConfig.GetTimeBetweenAnimationCycles())
 			{
 				SetAttackAnimation();
 				animator.SetTrigger(ATTACK_TRIGGER);
