@@ -75,7 +75,11 @@ namespace RPG.Character
 		{
 			target = targetToAttack;
 			StartCoroutine (AttackTargetRepeatedly ());
+		}
 
+		public void StopAttacking()
+		{
+			StopAllCoroutines ();
 		}
 
 		IEnumerator AttackTargetRepeatedly()
