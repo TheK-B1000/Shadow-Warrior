@@ -90,8 +90,11 @@ namespace RPG.Character
 
 				while (attackersStillAlive && targetStillAlive) 
 				{
-					float weaponHitPeriod = currentWeaponConfig.GetTimeBetweenAnimationCycles ();
-				float timeToWait = weaponHitPeriod * character.GetAnimSpeedMultiplier();
+				var animationClip = currentWeaponConfig.GetAttackAnimClip();
+					float animationClipTime = animationClip.length / character.GetAnimSpeedMultiplier();
+					float timeToWait = animationClipTime + currentWeaponConfig.GetTimeBetweenAnimationCycles();
+
+
 					bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
 					if (isTimeToHitAgain)
@@ -123,7 +126,7 @@ namespace RPG.Character
 			return currentWeaponConfig;
 		}
 
-		private void SetAttackAnimation ()
+		void SetAttackAnimation ()
 		{
 			if (!character.GetOverrideController ()) {
 				Debug.Break ();
@@ -136,7 +139,7 @@ namespace RPG.Character
 			}
 		}
 
-		private GameObject RequestDominantHand()
+		GameObject RequestDominantHand()
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand>();
 			int numberOfDominantHands = dominantHands.Length;
@@ -144,18 +147,8 @@ namespace RPG.Character
 			Assert.IsFalse (numberOfDominantHands > 1, "Multiple DominantHand Scripts found on Player, Please remove one ");
 			return dominantHands[0].gameObject;
 		}
-			
-		private void AttackTarget ()
-		{
-			if (Time.time - lastHitTime > currentWeaponConfig.GetTimeBetweenAnimationCycles())
-			{
-				SetAttackAnimation();
-				animator.SetTrigger(ATTACK_TRIGGER);
-				lastHitTime = Time.time;
-			}
-		}
 
-		private float CalculateDamage()
+		float CalculateDamage()
 		{
 			return baseDamage + currentWeaponConfig.GetAdditionalDamage();
 		}
