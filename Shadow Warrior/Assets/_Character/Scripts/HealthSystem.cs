@@ -66,7 +66,6 @@ public class HealthSystem : MonoBehaviour
 				
 			IEnumerator KillCharacter()
 			{
-				StopAllCoroutines ();
 				character.Kill();
 				animator.SetTrigger (DEATH_TRIGGER);
 

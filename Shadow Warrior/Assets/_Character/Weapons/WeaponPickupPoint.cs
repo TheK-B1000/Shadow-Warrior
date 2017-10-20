@@ -46,7 +46,7 @@ public class WeaponPickupPoint : MonoBehaviour
 
 		void OnTriggerEnter()
 		{
-			FindObjectOfType<WeaponSystem>().PutWeaponInHand(weaponConfig);
+			FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfig);
 			audioSource.PlayOneShot (pickupSFX);
 		}
 	}
