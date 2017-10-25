@@ -35,6 +35,7 @@ namespace RPG.Character
 		{
 			bool targetIsDead;
 			bool targetIsOutOfRange;
+
 			if (target == null)
 			{
 				targetIsDead = false;
@@ -85,10 +86,10 @@ namespace RPG.Character
 
 		IEnumerator AttackTargetRepeatedly()
 		{
-				bool attackersStillAlive = GetComponent<HealthSystem> ().healthAsPercentage >= Mathf.Epsilon;
+				bool attackerStillAlive = GetComponent<HealthSystem> ().healthAsPercentage >= Mathf.Epsilon;
 				bool targetStillAlive = target.GetComponent<HealthSystem> ().healthAsPercentage >= Mathf.Epsilon;
 
-				while (attackersStillAlive && targetStillAlive) 
+				while (attackerStillAlive && targetStillAlive) 
 				{
 				var animationClip = currentWeaponConfig.GetAttackAnimClip();
 					float animationClipTime = animationClip.length / character.GetAnimSpeedMultiplier();
@@ -126,16 +127,17 @@ namespace RPG.Character
 			return currentWeaponConfig;
 		}
 
-		void SetAttackAnimation ()
+		void SetAttackAnimation()
 		{
-			if (!character.GetOverrideController ()) {
+			if (!character.GetOverrideController())
+            {
 				Debug.Break ();
 				Debug.LogAssertion ("Please provide " + gameObject + " with an animator override controller.");
 			} else {
-				animator = GetComponent<Animator> ();
+				
 				var animatorOverrideController = character.GetOverrideController ();
 				animator.runtimeAnimatorController = animatorOverrideController;
-				animatorOverrideController [DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip (); 
+				animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip (); 
 			}
 		}
 

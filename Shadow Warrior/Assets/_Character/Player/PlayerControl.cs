@@ -11,7 +11,6 @@ namespace RPG.Character
 		SpecialAbilities abilities;
 		WeaponSystem weaponSystem;
 
-		CameraRaycaster cameraRaycaster = null;
 
 		void Start ()
 		{
@@ -47,12 +46,6 @@ namespace RPG.Character
 				}
 			}
 		}
-
-		private bool IsTargetInRange(GameObject target)
-		{
-			float distanceToTarget = (target.transform.position - transform.position).magnitude;
-			return distanceToTarget <= weaponSystem.GetCurrentWeapon().GetMaxAttackRange();
-		}
 	
 		void OnMouseOverPotentiallyWalkable(Vector3 destination)
 		{
@@ -63,7 +56,13 @@ namespace RPG.Character
 			}
 		}
 
-		void OnMouseOverEnemy(EnemyAI enemy)
+        private bool IsTargetInRange(GameObject target)
+        {
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            return distanceToTarget <= weaponSystem.GetCurrentWeapon().GetMaxAttackRange();
+        }
+
+        void OnMouseOverEnemy(EnemyAI enemy)
 		{
 			if (Input.GetMouseButton (0) && IsTargetInRange (enemy.gameObject)) {
 				weaponSystem.AttackTarget (enemy.gameObject);
