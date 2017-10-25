@@ -6,7 +6,6 @@ using RPG.CameraUI;
 namespace RPG.Character
 {
 	[SelectionBase]
-	[RequireComponent (typeof (NavMeshAgent))]
 	public class Character : MonoBehaviour
 		{
 			[Header("Animator")]
@@ -53,7 +52,7 @@ namespace RPG.Character
 				capsuleCollider.radius = colliderRadius;
 				capsuleCollider.height = colliderHeight;
 
-				myRigidbody = GetComponent<Rigidbody> ();
+				myRigidbody = gameObject.AddComponent<Rigidbody> ();
 				myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
 				navMeshAgent = gameObject.AddComponent<NavMeshAgent> ();
@@ -136,5 +135,14 @@ namespace RPG.Character
 				float turnSpeed = Mathf.Lerp(stationaryTurnSpeed, movingTurnSpeed, forwardAmount);
 				transform.Rotate(0, turnAmount * turnSpeed * Time.deltaTime, 0);
 			}
+		void OnAnimatorMove()
+		{
+
+			if (Time.deltaTime > 0) {
+				Vector3 velocity = (animator.deltaPosition * moveSpeedMultiplier) / Time.deltaTime;
+				velocity.y = myRigidbody.velocity.y;
+				myRigidbody.velocity = velocity;
+			}
+		}
 	}
 }
