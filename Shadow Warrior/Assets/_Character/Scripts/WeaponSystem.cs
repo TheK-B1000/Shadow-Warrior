@@ -137,7 +137,7 @@ namespace RPG.Character
 				
 				var animatorOverrideController = character.GetOverrideController ();
 				animator.runtimeAnimatorController = animatorOverrideController;
-				animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip (); 
+				animatorOverrideController["DEFAULT ATTACK"] = currentWeaponConfig.GetAttackAnimClip (); 
 			}
 		}
 
