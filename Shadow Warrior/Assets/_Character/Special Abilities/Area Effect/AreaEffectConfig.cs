@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPG.Character
 {
-	[CreateAssetMenu(menuName = ("RPG/Special Ability/Power Attack"))]
+	[CreateAssetMenu(menuName = ("RPG/Special Ability/Area Effect"))]
 	public class AreaEffectConfig : AbilityConfig
 	{
 		[Header("Area Effect Speific")]
