@@ -5,11 +5,11 @@ public class AudioTrigger : MonoBehaviour {
 	//Serialized
 	[SerializeField] AudioClip clip;
 	[SerializeField] int layerFilter = 11;
-	[SerializeField] float playerDistanceThreshold = 2f;
+	[SerializeField] float playerDistanceThreshold = 5f;
 	[SerializeField] bool isOneTimeOnly = true;
 
 	//Private members
-	[SerializeField] bool hasPlayed = false;
+	bool hasPlayed = false;
 	AudioSource audioSource;
 	GameObject player; // will only trigger on distance to player
 
@@ -19,14 +19,15 @@ public class AudioTrigger : MonoBehaviour {
 		audioSource.playOnAwake = false;
 		audioSource.clip = clip;
 
+        player = GameObject.FindWithTag("Player");
 	}
 
 	void Update()
 	{
-		float distanceToPlayer = Vector3.Distance (transform.position, player.transform.position);
+		float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 		if (distanceToPlayer <= playerDistanceThreshold)
 		{
-			return;
+			RequestPlayAudioClip();
 		}
 	}
 

@@ -47,7 +47,7 @@ namespace RPG.CameraUI
             }
         }
 
-        private bool RaycastForEnemy(Ray ray)
+       bool RaycastForEnemy(Ray ray)
         {
             RaycastHit hitInfo;
             Physics.Raycast(ray, out hitInfo, maxRaycastDepth);

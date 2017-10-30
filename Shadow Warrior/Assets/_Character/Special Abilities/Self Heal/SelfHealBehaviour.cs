@@ -16,10 +16,10 @@ namespace RPG.Character
 		public override void Use(GameObject target)
 			{
 			PlayAbilitySound ();
-			var playerHealth = player.GetComponent<HealthSystem> ();
-			playerHealth.Heal ((config as SelfHealConfig).GetExtraHealth ());
-			PlayParticleEffect ();
-			PlayAbilityAnimation ();
+			var playerHealth = player.GetComponent<HealthSystem>();
+			playerHealth.Heal((config as SelfHealConfig).GetExtraHealth());
+			PlayParticleEffect();
+			PlayAbilityAnimation();
 			}
 	}
 }

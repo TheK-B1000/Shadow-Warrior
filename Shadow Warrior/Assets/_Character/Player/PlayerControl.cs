@@ -64,12 +64,13 @@ namespace RPG.Character
 
         void OnMouseOverEnemy(EnemyAI enemy)
 		{
-			if (Input.GetMouseButton (0) && IsTargetInRange (enemy.gameObject)) {
+			if (Input.GetMouseButton(0) && IsTargetInRange (enemy.gameObject))
+            {
 				weaponSystem.AttackTarget (enemy.gameObject);
 			} 
 			else if (Input.GetMouseButtonDown (0) && !IsTargetInRange (enemy.gameObject)) 
 			{
-				StartCoroutine (MoveAndAttack (enemy));
+				StartCoroutine(MoveAndAttack (enemy));
 			}
 			else if (Input.GetMouseButtonDown(1) && IsTargetInRange(enemy.gameObject))
 			{
@@ -77,7 +78,7 @@ namespace RPG.Character
 			}
 			else if (Input.GetMouseButtonDown(1) && !IsTargetInRange(enemy.gameObject))
 			{
-				StartCoroutine (MoveAndPowerAttack (enemy));
+				StartCoroutine(MoveAndPowerAttack (enemy));
 			}
 		}
 

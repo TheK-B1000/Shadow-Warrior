@@ -8,7 +8,7 @@ namespace RPG.Character
 	public class PowerAttackConfig : AbilityConfig 
 	{
 		[Header("Power Attack Speific")]
-		[SerializeField] float extraDamage = 10f;
+		[SerializeField] float extraDamage = 50f;
 
 		public override AbilityBehaviour GetBehaviourComponent(GameObject objectToAttachTo)
 		{

@@ -20,7 +20,8 @@ public class HealthSystem : MonoBehaviour
 			float currentHealthPoints;
 			Animator animator;
 			AudioSource audioSource;
-		Character character;
+		    Character characterMovement;
+
 			public float healthAsPercentage{ get { return currentHealthPoints / maxHealthPoints; } }
 
 			// Use this for initialization
@@ -28,9 +29,9 @@ public class HealthSystem : MonoBehaviour
 			{
 				animator = GetComponent<Animator> ();
 				audioSource = GetComponent<AudioSource> ();
-				character = GetComponent<Character>();
+				characterMovement = GetComponent<Character>();
 
-			currentHealthPoints = maxHealthPoints;
+			    currentHealthPoints = maxHealthPoints;
 			}
 			
 			// Update is called once per frame
@@ -66,12 +67,13 @@ public class HealthSystem : MonoBehaviour
 				
 			IEnumerator KillCharacter()
 			{
-				character.Kill();
+				characterMovement.Kill();
 				animator.SetTrigger (DEATH_TRIGGER);
 
 				audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
 				audioSource.Play(); // override any existing sounds
 				yield return new WaitForSecondsRealtime (audioSource.clip.length); // todo use auddio clip length (optional)
+
 				var playerComponent = GetComponent<PlayerControl> ();
 				if (playerComponent && playerComponent.isActiveAndEnabled) // relying on lazy evaluation 
 				{

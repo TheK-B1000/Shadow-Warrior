@@ -8,8 +8,8 @@ namespace RPG.Character
 		{
 			[SerializeField] AbilityConfig[] abilities;
 			[SerializeField] Image energyBar;
-			[SerializeField] float maxEnergyPoints = 100f;
-			[SerializeField] float regenPointsPerSecond = 1f;
+			[SerializeField] float maxEnergyPoints = 1000f;
+			[SerializeField] float regenPointsPerSecond = 100f;
 			[SerializeField] AudioClip outOfEnergy;
 
 			float currentEnergyPoints;

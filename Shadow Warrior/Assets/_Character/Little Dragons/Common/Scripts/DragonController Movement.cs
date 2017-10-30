@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MalbersAnimations;
+using RPG.Character;
 
 public partial class DragonController 
 {

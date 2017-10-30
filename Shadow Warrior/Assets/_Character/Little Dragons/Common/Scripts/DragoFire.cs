@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using RPG.Character;
 
 public class DragoFire : MonoBehaviour {
 
@@ -170,10 +171,11 @@ public class DragoFire : MonoBehaviour {
             }
         }
     }
-
+  
     //This is call by the Animator Behaviors to activate and deactivate the head aim in certain animations, (Die, Fall, Sleep)
     public void Activate(bool value)
     {
         active = value;
     }
+
 }

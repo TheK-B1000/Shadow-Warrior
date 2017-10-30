@@ -12,7 +12,7 @@ namespace RPG.Character
 			[SerializeField] RuntimeAnimatorController animatorController;
 			[SerializeField] AnimatorOverrideController animatorOverrideController;
 			[SerializeField] Avatar characterAvatar;
-			[SerializeField] [Range (.1f,1f)] float animatorForwardCap = 1f;
+			[SerializeField] [Range (.1f, 1f)] float animatorForwardCap = 1f;
 
 			[Header("Audio")]
 			[SerializeField] float audioSourceSpatialBlend = 0.5f;

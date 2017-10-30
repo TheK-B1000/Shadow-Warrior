@@ -54,7 +54,7 @@ public abstract class AbilityBehaviour : MonoBehaviour {
 
 		protected void PlayAbilitySound()
 		{
-			var abilitySound = config.GetRandomAbilitySound (); // todo change to random clip
+			var abilitySound = config.GetRandomAbilitySound ();
 			var audioSource = GetComponent<AudioSource>();
 			audioSource.PlayOneShot (abilitySound);
 		}

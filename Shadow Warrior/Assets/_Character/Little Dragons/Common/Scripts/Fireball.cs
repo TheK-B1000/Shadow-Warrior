@@ -10,7 +10,7 @@ public class Fireball : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer != 2)
+        if (other.gameObject.layer != 9)
         {
             Rigidbody impact = other.GetComponent<Rigidbody>();
 

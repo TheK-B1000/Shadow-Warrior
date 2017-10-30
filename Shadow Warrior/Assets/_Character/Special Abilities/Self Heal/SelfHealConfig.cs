@@ -7,8 +7,8 @@ namespace RPG.Character
 	[CreateAssetMenu(menuName = ("RPG/Special Ability/Self Heal"))]
 	public class SelfHealConfig : AbilityConfig
 	{
-		[Header("Self Heal Speific")]
-		[SerializeField] float extraHealth= 50f;
+		[Header("Self Heal Specific")]
+		[SerializeField] float extraHealth= 500f;
 
 		public override AbilityBehaviour GetBehaviourComponent(GameObject objectToAttachTo)
 		{
