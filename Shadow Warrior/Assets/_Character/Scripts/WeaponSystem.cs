@@ -145,7 +145,7 @@ namespace RPG.Character
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand>();
 			int numberOfDominantHands = dominantHands.Length;
-			Assert.IsFalse (numberOfDominantHands <= 0, "No DominantHand found on Player ");
+			Assert.IsFalse (numberOfDominantHands <= 0, "No DominantHand found on  " + gameObject);
 			Assert.IsFalse (numberOfDominantHands > 1, "Multiple DominantHand Scripts on " + gameObject.name + ", Please remove one ");
 			return dominantHands[0].gameObject;
 		}

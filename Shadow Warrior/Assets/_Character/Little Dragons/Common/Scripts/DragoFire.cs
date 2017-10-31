@@ -66,12 +66,12 @@ public class DragoFire : MonoBehaviour
 
         if (Physics.Raycast(rayOrigin, cam.forward, out hit, 50f))
         {
-            dir = (hit.point - FirePoint.position).normalized; // Get the direction from the firepoint to the Hit Point
-        }
-        else
-        {
+           dir = (hit.point - FirePoint.position).normalized; // Get the direction from the firepoint to the Hit Point
+       }
+      else
+       {
             dir = cam.forward;
-        }
+       }
 
         angle = Vector3.Angle(transform.forward, dir);
     }
@@ -158,7 +158,7 @@ public class DragoFire : MonoBehaviour
         {
             for (int i = 0; i < Bones.Length; i++)
             {
-                if (Vector3.Angle(transform.forward, cam.forward) < maxAngle && active && aimMode)
+               if (Vector3.Angle(transform.forward, cam.forward) < maxAngle && active && aimMode)
                 {
                     float percent = (float)(1 + i) / Bones.Length;
                     Quaternion next = Quaternion.Lerp(aa[i], Quaternion.LookRotation(cam.forward, Vector3.up) * Quaternion.Euler(0, -90, -90), percent); //get the -percent of each bones, lower get less rotation final bone (Head get full rotation) 
