@@ -10,7 +10,13 @@ namespace RPG.Character
 public class HealthSystem : MonoBehaviour 
 	{
 			[SerializeField] float maxHealthPoints = 100f;
-			[SerializeField] Image healthBar;
+
+        internal void AddjustCurrentHealth(int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        [SerializeField] Image healthBar;
 			[SerializeField] AudioClip[] damageSounds;
 			[SerializeField] AudioClip[] deathSounds;
 			[SerializeField] float deathVanishSeconds = 2.0f;

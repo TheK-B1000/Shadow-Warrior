@@ -8,7 +8,7 @@ public class SpinMe : MonoBehaviour {
 
 		[SerializeField] float xRotationsPerMinute = 1f;
 		[SerializeField] float yRotationsPerMinute = 1f;
-		[SerializeField] float zRotationsPerMinute = 1f;
+		[SerializeField] float zRotationsPerMinute = 0f;
 
 		
 		void Update () {

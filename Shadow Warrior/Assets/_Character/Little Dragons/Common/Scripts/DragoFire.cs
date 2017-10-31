@@ -2,22 +2,24 @@
 using System.Collections;
 using RPG.Character;
 
-public class DragoFire : MonoBehaviour {
+public class DragoFire : MonoBehaviour
+{
 
     private Animator anim;
     private Transform cam;
 
     [Header("Dragon Fire")]
-   
+
     public float FireBallSpeed = 500;
     public Transform FirePoint;
-         
+
     public GameObject FireBall;
     public GameObject FireBreath;
-  
+    GameObject target;
+
     ParticleSystem.EmissionModule emision;
     [Space]
-  
+
     public bool aimMode;
     public float maxAngle = 110;
     bool active;
@@ -30,8 +32,8 @@ public class DragoFire : MonoBehaviour {
 
     // Use this for initialization
 
-    void Start () {
-
+    void Start()
+    {
         anim = GetComponent<Animator>();
         //Set the Fire Breath
         GameObject firebreathinstance = Instantiate(FireBreath);
@@ -45,19 +47,19 @@ public class DragoFire : MonoBehaviour {
         emision.rate = new ParticleSystem.MinMaxCurve(0);
 #endif
 
-        if (Camera.main != null)  cam = Camera.main.transform;
+        if (Camera.main != null) cam = Camera.main.transform;
 
         active = true;
-      //  initialrotations = new Quaternion[Bones.Length];
+        //  initialrotations = new Quaternion[Bones.Length];
         aa = new Quaternion[Bones.Length];
 
-    //    for (int i = 0; i < Bones.Length; i++)
+        //    for (int i = 0; i < Bones.Length; i++)
         //    initialrotations[i] = Quaternion.Inverse(transform.rotation) * Bones[i].rotation;
     }
 
     void CalculateDir()
     {
-        
+
         Vector3 rayOrigin = cam.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
 
         RaycastHit hit;
@@ -86,12 +88,12 @@ public class DragoFire : MonoBehaviour {
             {
                 GameObject fireball = Instantiate(FireBall);
                 fireball.transform.position = FirePoint.transform.position;
-            
+
                 //Get the direction from the camera
                 CalculateDir();
 
 
-                if (angle > maxAngle)  dir = FirePoint.forward;
+                if (angle > maxAngle) dir = FirePoint.forward;
 
                 if (!active || !aimMode || angle > maxAngle)
                 {
@@ -156,10 +158,10 @@ public class DragoFire : MonoBehaviour {
         {
             for (int i = 0; i < Bones.Length; i++)
             {
-                if (Vector3.Angle(transform.forward,cam.forward) < maxAngle && active && aimMode)
+                if (Vector3.Angle(transform.forward, cam.forward) < maxAngle && active && aimMode)
                 {
                     float percent = (float)(1 + i) / Bones.Length;
-                    Quaternion next = Quaternion.Lerp(aa[i], Quaternion.LookRotation(cam.forward, Vector3.up) * Quaternion.Euler(0,-90,-90), percent); //get the -percent of each bones, lower get less rotation final bone (Head get full rotation) 
+                    Quaternion next = Quaternion.Lerp(aa[i], Quaternion.LookRotation(cam.forward, Vector3.up) * Quaternion.Euler(0, -90, -90), percent); //get the -percent of each bones, lower get less rotation final bone (Head get full rotation) 
 
                     aa[i] = Quaternion.Lerp(aa[i], next, Time.deltaTime * Smoothness * 2);
                 }
@@ -171,11 +173,10 @@ public class DragoFire : MonoBehaviour {
             }
         }
     }
-  
+
     //This is call by the Animator Behaviors to activate and deactivate the head aim in certain animations, (Die, Fall, Sleep)
     public void Activate(bool value)
     {
         active = value;
     }
-
 }

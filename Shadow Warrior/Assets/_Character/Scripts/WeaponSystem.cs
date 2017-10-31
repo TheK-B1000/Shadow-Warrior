@@ -150,9 +150,9 @@ namespace RPG.Character
 			return dominantHands[0].gameObject;
 		}
 
-		float CalculateDamage()
-		{
-			return baseDamage + currentWeaponConfig.GetAdditionalDamage();
-		}
-	}
+        float CalculateDamage()
+        {
+            return baseDamage + currentWeaponConfig.GetAdditionalDamage();
+        }
+    }
 }
